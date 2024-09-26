@@ -1,10 +1,10 @@
-import express from "express";
+import express, { type Express } from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user";
 import { courseRouter } from "./routes/course";
 import { adminRouter } from "./routes/admin";
 
-const app = express();
+const app: Express = express();
 
 const port = process.env.PORT || 3000;
 
