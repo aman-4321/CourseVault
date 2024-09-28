@@ -24,7 +24,6 @@ export const userSchema = new Schema({
     type: String,
     required: true,
     minLength: 5,
-    maxLength: 30,
     trim: true,
   },
 

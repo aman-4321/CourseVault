@@ -77,6 +77,49 @@ const signinBody = z.object({
 // signin
 userRouter.post("/signin", async (req: Request, res: Response) => {
   const { success, error, data } = signinBody.safeParse(req.body);
+  if (!success) {
+    return res.status(400).json({
+      message: "Invalid input",
+      error: error.errors,
+    });
+  }
+
+  const { email, password } = data;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
+    const token = jwt.sign({ userId: user._id }, USER_JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.cookie("token", token);
+
+    res.status(200).json({
+      message: "Logged in successfully",
+      userId: user._id,
+      email: user.email,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      message: "Error during signin",
+      error: err.message || err,
+    });
+  }
 });
 
 // purchase course
