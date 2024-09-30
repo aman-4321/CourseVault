@@ -12,7 +12,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
-export const userSchema = new Schema({
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -55,7 +55,7 @@ export const userSchema = new Schema({
   ],
 });
 
-export const adminSchema = new Schema({
+const adminSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -92,7 +92,7 @@ export const adminSchema = new Schema({
   ],
 });
 
-export const courseSchema = new Schema({
+const courseSchema = new Schema({
   title: {
     type: String,
     trim: true,
@@ -122,7 +122,7 @@ export const courseSchema = new Schema({
   },
 });
 
-export const purchaseSchema = new Schema({
+const purchaseSchema = new Schema({
   courseId: {
     type: Schema.Types.ObjectId,
     ref: "Course",
