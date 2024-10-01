@@ -1,16 +1,16 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const mongodbUrl = process.env.MONGODB_URL;
 const Schema = mongoose.Schema;
 
 if (!mongodbUrl) {
-  throw new Error("MONGODB_URL environment variable is not set");
+  throw new Error('MONGODB_URL environment variable is not set');
 }
 
 mongoose
   .connect(mongodbUrl)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("Error connecting to MongoDB:", err));
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 const userSchema = new Schema({
   email: {
@@ -43,14 +43,14 @@ const userSchema = new Schema({
   coursesOwned: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Course",
+      ref: 'Course',
     },
   ],
 
   purchases: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Purchase",
+      ref: 'Purchase',
     },
   ],
 });
@@ -87,7 +87,7 @@ const adminSchema = new Schema({
   coursesCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Course",
+      ref: 'Course',
     },
   ],
 });
@@ -117,7 +117,7 @@ const courseSchema = new Schema({
 
   creatorId: {
     type: Schema.Types.ObjectId,
-    ref: "Admin",
+    ref: 'Admin',
     required: true,
   },
 });
@@ -125,17 +125,17 @@ const courseSchema = new Schema({
 const purchaseSchema = new Schema({
   courseId: {
     type: Schema.Types.ObjectId,
-    ref: "Course",
+    ref: 'Course',
     required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
 });
 
-export const User = mongoose.model("User", userSchema);
-export const Admin = mongoose.model("Admin", adminSchema);
-export const Course = mongoose.model("Course", courseSchema);
-export const Purchase = mongoose.model("Purchase", purchaseSchema);
+export const User = mongoose.model('User', userSchema);
+export const Admin = mongoose.model('Admin', adminSchema);
+export const Course = mongoose.model('Course', courseSchema);
+export const Purchase = mongoose.model('Purchase', purchaseSchema);

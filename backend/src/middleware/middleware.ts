@@ -1,6 +1,6 @@
-import { type Request, type Response, type NextFunction } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
-import { ADMIN_JWT_SECRET, USER_JWT_SECRET } from "../config";
+import { type Request, type Response, type NextFunction } from 'express';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { ADMIN_JWT_SECRET, USER_JWT_SECRET } from '../config';
 
 declare global {
   namespace Express {
@@ -14,15 +14,15 @@ const verifyToken = (req: Request, res: Response, secret: string): boolean => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     res.status(401).json({
-      message: "No token provided",
+      message: 'No token provided',
     });
     return false;
   }
 
-  const [bearer, token] = authHeader.split(" ");
-  if (bearer !== "Bearer" || !token) {
+  const [bearer, token] = authHeader.split(' ');
+  if (bearer !== 'Bearer' || !token) {
     res.status(401).json({
-      message: "Invalid authorization header format",
+      message: 'Invalid authorization header format',
     });
     return false;
   }
@@ -33,7 +33,7 @@ const verifyToken = (req: Request, res: Response, secret: string): boolean => {
     return true;
   } catch (err: any) {
     const message =
-      err.name === "TokenExpiredError" ? "Token expired" : "Invalid token";
+      err.name === 'TokenExpiredError' ? 'Token expired' : 'Invalid token';
     res.status(403).json({ message });
     return false;
   }
@@ -46,7 +46,7 @@ export const adminMiddleware = (
 ): void => {
   const secret = ADMIN_JWT_SECRET;
   if (!secret) {
-    res.status(500).json({ message: "Server configuration error" });
+    res.status(500).json({ message: 'Server configuration error' });
     return;
   }
   if (verifyToken(req, res, secret)) {
@@ -61,7 +61,7 @@ export const userMiddleware = (
 ): void => {
   const secret = USER_JWT_SECRET;
   if (!secret) {
-    res.status(500).json({ message: "Server configuration error" });
+    res.status(500).json({ message: 'Server configuration error' });
     return;
   }
   if (verifyToken(req, res, secret)) {
