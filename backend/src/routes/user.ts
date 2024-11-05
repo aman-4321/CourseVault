@@ -269,6 +269,7 @@ userRouter.put(
   },
 );
 
+//logout
 userRouter.post(
   '/logout',
   userMiddleware,

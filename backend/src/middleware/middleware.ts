@@ -11,7 +11,7 @@ declare global {
 }
 
 const verifyToken = (req: Request, res: Response, secret: string): boolean => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.cookies?.token;
   if (!authHeader) {
     res.status(401).json({
       message: 'No token provided',
