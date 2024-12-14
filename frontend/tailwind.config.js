@@ -10,6 +10,7 @@ export default {
         heading: ["Montserrat", "sans-serif"],
         Poppins: ["Poppins", "sans-serif"],
         body: ['"Open Sans"', "sans-serif"],
+        Outfit: ["Outfit", "sans-serif"],
       },
     },
   },
