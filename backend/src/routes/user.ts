@@ -48,7 +48,7 @@ userRouter.post('/signup', async (req: Request, res: Response) => {
 
     const userId = user._id;
 
-    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '24h' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -98,7 +98,7 @@ userRouter.post('/signin', async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign({ userId: user._id }, USER_JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '24h',
     });
 
     res.cookie('token', token, {

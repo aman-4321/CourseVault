@@ -1,11 +1,11 @@
-import HomePageFifthSection from "../components/HomePageFifthSection";
-import HomePageFirstSection from "../components/HomePageFirstSection";
-import HomePageFourthSection from "../components/HomePageFourthSection";
-import HomePageLastSection from "../components/HomePageLastSection";
-import HomePageSecondSection from "../components/HomePageSecondSection";
-import HomePageSixthSection from "../components/HomePageSixthSection";
-import HomePageThirdSection from "../components/HomePageThirdSection";
-import { Navbar } from "../components/Navbar";
+import HomePageFifthSection from "../components/Home/HomePageFifthSection";
+import HomePageFirstSection from "../components/Home/HomePageFirstSection";
+import HomePageFourthSection from "../components/Home/HomePageFourthSection";
+import HomePageLastSection from "../components/Home/HomePageLastSection";
+import HomePageSecondSection from "../components/Home/HomePageSecondSection";
+import HomePageSixthSection from "../components/Home/HomePageSixthSection";
+import HomePageThirdSection from "../components/Home/HomePageThirdSection";
+import { Navbar } from "../components/Home/Navbar";
 
 const Home = () => {
   return (
