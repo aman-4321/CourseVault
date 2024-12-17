@@ -1,6 +1,9 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { ADMIN_JWT_SECRET, USER_JWT_SECRET } from '../config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 declare global {
   namespace Express {
@@ -11,25 +14,17 @@ declare global {
 }
 
 const verifyToken = (req: Request, res: Response, secret: string): boolean => {
-  const authHeader = req.cookies?.token;
-  if (!authHeader) {
+  const token = req.cookies?.token;
+  if (!token) {
     res.status(401).json({
       message: 'No token provided',
     });
     return false;
   }
 
-  const [bearer, token] = authHeader.split(' ');
-  if (bearer !== 'Bearer' || !token) {
-    res.status(401).json({
-      message: 'Invalid authorization header format',
-    });
-    return false;
-  }
-
   try {
     const decoded = jwt.verify(token, secret) as JwtPayload;
-    req.userId = decoded.userId;
+    req.userId = decoded.userId || decoded.adminId;
     return true;
   } catch (err: any) {
     const message =
@@ -42,7 +37,7 @@ const verifyToken = (req: Request, res: Response, secret: string): boolean => {
 export const adminMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void => {
   const secret = ADMIN_JWT_SECRET;
   if (!secret) {
@@ -57,7 +52,7 @@ export const adminMiddleware = (
 export const userMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void => {
   const secret = USER_JWT_SECRET;
   if (!secret) {

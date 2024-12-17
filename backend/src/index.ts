@@ -6,18 +6,21 @@ import { userRouter } from './routes/user';
 import { courseRouter } from './routes/course';
 import { adminRouter } from './routes/admin';
 
-dotenv.config();
-
 const app: Express = express();
 
-const port = process.env.PORT || 8080;
+dotenv.config();
+
+const port = process.env.PORT;
 
 app.use(
   cors({
     credentials: true,
     origin: 'http://localhost:5173',
-  }),
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 

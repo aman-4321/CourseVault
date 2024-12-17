@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const mongodbUrl = process.env.MONGODB_URL;
 const Schema = mongoose.Schema;
 
@@ -67,7 +71,6 @@ const adminSchema = new Schema({
     type: String,
     required: true,
     minLength: 5,
-    maxLength: 30,
     trim: true,
   },
 

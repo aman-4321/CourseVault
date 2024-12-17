@@ -17,10 +17,11 @@ export const adminRouter = express.Router();
 adminRouter.post('/signup', async (req: Request, res: Response) => {
   const { success, error, data } = signupBody.safeParse(req.body);
   if (!success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Invalid Inputs',
       error: error.errors,
     });
+    return;
   }
 
   const existingAdmin = await Admin.findOne({
@@ -28,9 +29,10 @@ adminRouter.post('/signup', async (req: Request, res: Response) => {
   });
 
   if (existingAdmin) {
-    return res.status(409).json({
+    res.status(409).json({
       message: 'Email already Exists',
     });
+    return;
   }
 
   const { email, password, firstName, lastName } = data;
@@ -47,7 +49,7 @@ adminRouter.post('/signup', async (req: Request, res: Response) => {
 
     const adminId = admin._id;
 
-    const token = jwt.sign({ adminId }, ADMIN_JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ adminId }, ADMIN_JWT_SECRET, { expiresIn: '24h' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -59,11 +61,14 @@ adminRouter.post('/signup', async (req: Request, res: Response) => {
       adminId,
       email,
     });
-  } catch (err: any) {
-    return res.json(500).json({
+
+    return;
+  } catch (err) {
+    res.status(500).json({
       message: 'Error creating Admin',
-      error: err.message || err,
+      error: err,
     });
+    return;
   }
 });
 
@@ -72,10 +77,11 @@ adminRouter.post('/signin', async (req: Request, res: Response) => {
   const { success, error, data } = signinBody.safeParse(req.body);
 
   if (!success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Invalid input',
       error: error.errors,
     });
+    return;
   }
 
   const { email, password } = data;
@@ -84,17 +90,19 @@ adminRouter.post('/signin', async (req: Request, res: Response) => {
     const admin = await Admin.findOne({ email });
 
     if (!admin) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid email or password',
       });
+      return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, admin.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid email or password',
       });
+      return;
     }
 
     const token = jwt.sign({ adminId: admin._id }, ADMIN_JWT_SECRET, {
@@ -111,11 +119,12 @@ adminRouter.post('/signin', async (req: Request, res: Response) => {
       adminId: admin._id,
       email: admin.email,
     });
-  } catch (err: any) {
-    return res.status(500).json({
+  } catch (err) {
+    res.status(500).json({
       message: 'Error during Signin',
-      error: err.message || err,
+      error: err,
     });
+    return;
   }
 });
 
@@ -126,33 +135,43 @@ adminRouter.post(
   async (req: Request, res: Response) => {
     const { success, error, data } = CreateCourseBody.safeParse(req.body);
     if (!success) {
-      return res.status(400).json({
+      res.status(400).json({
         messgae: 'Invalid Input',
         error: error.errors,
       });
+      return;
     }
 
     const { title, price, imageUrl, description } = data;
 
+    const creatorId = req.userId;
+
     try {
       const course = await Course.create({
-        title: title,
-        description: description,
-        price: price,
-        imageUrl: imageUrl,
+        title,
+        description,
+        price,
+        imageUrl,
+        creatorId,
       });
 
-      return res.status(200).json({
+      await Admin.findByIdAndUpdate(creatorId, {
+        $push: { coursesCreated: course._id },
+      });
+
+      res.status(200).json({
         message: 'Course created successfully',
+        courseId: course._id,
         course,
       });
-    } catch (err: any) {
+      return;
+    } catch (err) {
       res.status(500).json({
         message: 'Error creating Course',
-        error: err.message || err,
+        error: err,
       });
     }
-  },
+  }
 );
 
 // update a course
@@ -164,36 +183,39 @@ adminRouter.put(
     const { success, error, data } = UpdateCourseBody.safeParse(req.body);
 
     if (!success) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Invalid Input',
         error: error.errors,
       });
+      return;
     }
 
     try {
       const updatedCourse = await Course.findByIdAndUpdate(
         courseId,
         { ...data },
-        { new: true },
+        { new: true }
       );
 
       if (!updatedCourse) {
-        return res.status(404).json({
+        res.status(404).json({
           message: 'Course not found',
         });
+        return;
       }
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Course updated successfully',
         updatedCourse,
       });
-    } catch (err: any) {
+      return;
+    } catch (err) {
       res.status(500).json({
         message: 'Error updating course',
-        error: err.message || err,
+        error: err,
       });
     }
-  },
+  }
 );
 
 // delete a course
@@ -207,29 +229,36 @@ adminRouter.delete(
     try {
       const course = await Course.findById(courseId);
       if (!course) {
-        return res.status(404).json({
+        res.status(404).json({
           message: 'Course not found',
         });
+        return;
       }
 
       if (course.creatorId.toString() !== adminId) {
-        return res.status(403).json({
+        res.status(403).json({
           message: 'You are not authorized to delete this course',
         });
+        return;
       }
 
-      await course.deleteOne();
+      await Course.findByIdAndDelete(courseId);
 
-      return res.status(200).json({
+      await Admin.findByIdAndUpdate(adminId, {
+        $pull: { coursesCreated: courseId },
+      });
+
+      res.status(200).json({
         message: 'course was successfully deleted',
       });
-    } catch (err: any) {
+      return;
+    } catch (err) {
       res.status(500).json({
         message: 'Error deleting course',
-        error: err.message || err,
+        error: err,
       });
     }
-  },
+  }
 );
 
 // admin earnings
@@ -243,9 +272,10 @@ adminRouter.get(
       const courses = await Course.find({ creatorId: adminId });
 
       if (courses.length === 0) {
-        return res.status(404).json({
+        res.status(404).json({
           message: 'No courses found for this admin',
         });
+        return;
       }
 
       const courseIds = courses.map((course) => course._id);
@@ -253,20 +283,22 @@ adminRouter.get(
 
       const totalEarnings = purchases.reduce((sum, purchase) => {
         const course = courses.find((course) =>
-          course._id.equals(purchase.courseId),
+          course._id.equals(purchase.courseId)
         );
         return sum + (course ? course.price : 0);
       }, 0);
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Earnings calculated successfully',
         totalEarnings,
       });
+      return;
     } catch (err: any) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error calculating earnings',
         error: err.message || err,
       });
+      return;
     }
-  },
+  }
 );

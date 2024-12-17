@@ -7,15 +7,16 @@ export const courseRouter = express.Router();
 courseRouter.get('/course', async (req: Request, res: Response) => {
   try {
     const allCourses = await Course.find({});
-
-    return res.json({
+    res.json({
       allCourses,
     });
+    return;
   } catch (err: any) {
-    return res.status(500).json({
+    res.status(500).json({
       message: 'Error retrieving Courses',
       error: err.message || err,
     });
+    return;
   }
 });
 
@@ -25,20 +26,22 @@ courseRouter.get('/course/:courseId', async (req: Request, res: Response) => {
 
   try {
     const course = await Course.findById(courseId);
-
     if (!course) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Course not found',
       });
+      return;
     }
 
-    return res.json({
+    res.json({
       course,
     });
+    return;
   } catch (err: any) {
-    return res.status(500).json({
+    res.status(500).json({
       message: 'Error retrieving the course',
       error: err.message || err,
     });
+    return;
   }
 });

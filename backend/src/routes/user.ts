@@ -18,10 +18,11 @@ userRouter.post('/signup', async (req: Request, res: Response) => {
   const { success, error, data } = signupBody.safeParse(req.body);
 
   if (!success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Invalid Input',
       error: error.errors,
     });
+    return;
   }
 
   const existingUser = await User.findOne({
@@ -29,9 +30,10 @@ userRouter.post('/signup', async (req: Request, res: Response) => {
   });
 
   if (existingUser) {
-    return res.status(409).json({
+    res.status(409).json({
       message: 'Email already Exists',
     });
+    return;
   }
 
   const { password, email, firstName, lastName } = data;
@@ -72,10 +74,11 @@ userRouter.post('/signup', async (req: Request, res: Response) => {
 userRouter.post('/signin', async (req: Request, res: Response) => {
   const { success, error, data } = signinBody.safeParse(req.body);
   if (!success) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Invalid input',
       error: error.errors,
     });
+    return;
   }
 
   const { email, password } = data;
@@ -84,17 +87,19 @@ userRouter.post('/signin', async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid email or password',
       });
+      return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid email or password',
       });
+      return;
     }
 
     const token = jwt.sign({ userId: user._id }, USER_JWT_SECRET, {
@@ -104,6 +109,7 @@ userRouter.post('/signin', async (req: Request, res: Response) => {
     res.cookie('token', token, {
       httpOnly: true,
       sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -111,10 +117,10 @@ userRouter.post('/signin', async (req: Request, res: Response) => {
       userId: user._id,
       email: user.email,
     });
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       message: 'Error during signin',
-      error: err.message || err,
+      error: err,
     });
   }
 });
@@ -126,56 +132,61 @@ userRouter.post(
   async (req: Request, res: Response) => {
     const { success, error, data } = purchaseBody.safeParse(req.body);
     if (!success) {
-      return res.status(400).json({
+      res.status(400).json({
         messgae: 'Invalid Input',
         error: error.errors,
       });
+      return;
     }
 
     let courseId;
     try {
       courseId = new mongoose.Types.ObjectId(data.courseId);
     } catch (e) {
-      return res.status(400).json({ message: 'Invalid course ID format' });
+      res.status(400).json({ message: 'Invalid course ID format' });
+      return;
     }
     const userId = req.userId;
 
     try {
-      const course = await Course.findById(courseId);
-      if (!course) {
-        return res.status(404).json({
-          message: 'Course not found',
-        });
-      }
+      const existingPurchase = await Purchase.findOne({
+        userId: userId,
+        courseId: courseId,
+      });
 
-      const user = await User.findById(userId);
-      if (user?.coursesOwned.includes(courseId)) {
-        return res.status(409).json({
-          message: 'You already own the course',
+      if (existingPurchase) {
+        res.status(400).json({
+          message: 'Course already purchased',
         });
+        return;
       }
 
       const purchase = await Purchase.create({
-        courseId: course._id,
-        userId: userId,
+        courseId,
+        userId,
       });
 
-      user?.coursesOwned.push(course._id);
-      await user?.save();
+      await User.findByIdAndUpdate(userId, {
+        $push: {
+          coursesOwned: courseId,
+          purchases: purchase._id,
+        },
+      });
 
-      return res.status(200).json({
+      res.status(200).json({
         message: 'Course purchased successfully',
         purchaseId: purchase._id,
-        courseId: course._id,
         userId: userId,
       });
-    } catch (err: any) {
-      return res.status(500).json({
+      return;
+    } catch (err) {
+      res.status(500).json({
         message: 'Error processing purchase',
-        error: err.message || err,
+        error: err,
       });
+      return;
     }
-  },
+  }
 );
 
 // get all purchased courses
@@ -188,21 +199,24 @@ userRouter.get(
       const user = await User.findById(userId).populate('purchases');
 
       if (!user || user.purchases.length === 0) {
-        return res.status(404).json({
+        res.status(404).json({
           messages: "You don't have any courses yet",
         });
+        return;
       }
 
-      return res.status(200).json({
+      res.status(200).json({
         purchases: user.purchases,
       });
+      return;
     } catch (err: any) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error retrieving Courses',
         error: err.message || err,
       });
+      return;
     }
-  },
+  }
 );
 
 // update user info
@@ -213,10 +227,11 @@ userRouter.put(
     const { success, error, data } = updateBody.safeParse(req.body);
 
     if (!success) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Invalid Input',
         error: error.errors,
       });
+      return;
     }
 
     const userId = req.userId;
@@ -225,17 +240,19 @@ userRouter.put(
     try {
       const user = await User.findById(userId);
       if (!user) {
-        return res.status(404).json({
+        res.status(404).json({
           message: 'User not found',
         });
+        return;
       }
 
       if (email && email !== user.email) {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-          return res.status(409).json({
+          res.status(409).json({
             message: 'Email already exists',
           });
+          return;
         }
       }
 
@@ -266,7 +283,7 @@ userRouter.put(
         error: err.message || err,
       });
     }
-  },
+  }
 );
 
 //logout
@@ -279,8 +296,9 @@ userRouter.post(
       sameSite: 'strict',
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       message: 'Logged out successfully',
     });
-  },
+    return;
+  }
 );
