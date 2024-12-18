@@ -1,10 +1,8 @@
 import express, { type Request, type Response } from 'express';
-import { Course } from '../db/db';
-
-export const courseRouter = express.Router();
+import { Course } from '../models/course.model';
 
 // see all courses
-courseRouter.get('/course', async (req: Request, res: Response) => {
+export const AllCourses = async (req: Request, res: Response) => {
   try {
     const allCourses = await Course.find({});
     res.json({
@@ -18,10 +16,10 @@ courseRouter.get('/course', async (req: Request, res: Response) => {
     });
     return;
   }
-});
+};
 
 // see a specific course
-courseRouter.get('/course/:courseId', async (req: Request, res: Response) => {
+export const SpecificCourse = async (req: Request, res: Response) => {
   const { courseId } = req.params;
 
   try {
@@ -44,4 +42,4 @@ courseRouter.get('/course/:courseId', async (req: Request, res: Response) => {
     });
     return;
   }
-});
+};
