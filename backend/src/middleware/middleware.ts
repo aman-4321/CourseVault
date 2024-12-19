@@ -75,7 +75,8 @@ export const adminMiddleware = async (
 
   try {
     const decoded = jwt.verify(token, ADMIN_JWT_SECRET) as JwtPayload;
-    const admin = await Admin.findById(decoded.userId);
+
+    const admin = await Admin.findById(decoded.adminId);
 
     if (!admin) {
       res.status(401).json({ message: 'Admin not found' });
@@ -86,6 +87,12 @@ export const adminMiddleware = async (
     req.admin = admin;
     return next();
   } catch (err) {
-    res.status(401).json({ message: 'Unauthorized' });
+    console.error('Token verification error:', err);
+    if (err instanceof jwt.TokenExpiredError) {
+      res.status(401).json({ message: 'Token expired' });
+      return;
+    }
+    res.status(401).json({ message: 'Invalid Token' });
+    return;
   }
 };

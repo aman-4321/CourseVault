@@ -8,3 +8,13 @@ export interface User {
   purchases: string[];
   __v: number;
 }
+
+export interface Admin {
+  _id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  coursesCreated: string[];
+  __v: number;
+}

@@ -13,7 +13,7 @@ import { Course } from '../models/course.model';
 import { Purchase } from '../models/purchase.model';
 
 // signup
-export const AdminSignin = async (req: Request, res: Response) => {
+export const AdminSignup = async (req: Request, res: Response) => {
   const { success, error, data } = signupBody.safeParse(req.body);
   if (!success) {
     res.status(400).json({
@@ -72,7 +72,7 @@ export const AdminSignin = async (req: Request, res: Response) => {
 };
 
 // signin
-export const AdminSingup = async (req: Request, res: Response) => {
+export const AdminSignin = async (req: Request, res: Response) => {
   const { success, error, data } = signinBody.safeParse(req.body);
 
   if (!success) {
@@ -186,7 +186,7 @@ export const UpdateCourse = async (req: Request, res: Response) => {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       { ...data },
-      { new: true },
+      { new: true }
     );
 
     if (!updatedCourse) {
@@ -267,7 +267,7 @@ export const AdminEarnings = async (req: Request, res: Response) => {
 
     const totalEarnings = purchases.reduce((sum, purchase) => {
       const course = courses.find((course) =>
-        course._id.equals(purchase.courseId),
+        course._id.equals(purchase.courseId)
       );
       return sum + (course ? course.price : 0);
     }, 0);
@@ -284,4 +284,10 @@ export const AdminEarnings = async (req: Request, res: Response) => {
     });
     return;
   }
+};
+
+export const GetAdminProfile = async (req: Request, res: Response) => {
+  res.status(200).json({
+    admin: req.admin,
+  });
 };
