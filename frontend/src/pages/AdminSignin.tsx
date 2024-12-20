@@ -38,12 +38,7 @@ const AdminSignin = () => {
         navigate("/home");
       }
     } catch (error: unknown) {
-      if (
-        axios.isAxiosError(error) &&
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
         setError(error.response.data.message);
       } else {
         setError("Signup failed. Please try again");
@@ -80,7 +75,7 @@ const AdminSignin = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Sign Up</button>
+          <button type="submit">Sign In</button>
           {error && <p>{error}</p>}
         </form>
       </div>

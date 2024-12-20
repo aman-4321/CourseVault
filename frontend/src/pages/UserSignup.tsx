@@ -42,9 +42,11 @@ const UserSignup = () => {
         navigate("/home");
       }
     } catch (error) {
-      console.log(error);
-      console.error(error);
-      setError("Signup failed. Please try again");
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Signup failed. Please try again");
+      }
     }
 
     setEmail("");

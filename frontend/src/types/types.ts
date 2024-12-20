@@ -18,3 +18,11 @@ export interface Admin {
   coursesCreated: string[];
   __v: number;
 }
+
+export interface Course {
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  creatorId: string;
+}

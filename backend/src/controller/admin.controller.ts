@@ -132,7 +132,7 @@ export const CreateCourse = async (req: Request, res: Response) => {
   const { success, error, data } = CreateCourseBody.safeParse(req.body);
   if (!success) {
     res.status(400).json({
-      messgae: 'Invalid Input',
+      message: 'Invalid Input',
       error: error.errors,
     });
     return;
@@ -186,7 +186,7 @@ export const UpdateCourse = async (req: Request, res: Response) => {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       { ...data },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedCourse) {
@@ -267,7 +267,7 @@ export const AdminEarnings = async (req: Request, res: Response) => {
 
     const totalEarnings = purchases.reduce((sum, purchase) => {
       const course = courses.find((course) =>
-        course._id.equals(purchase.courseId)
+        course._id.equals(purchase.courseId),
       );
       return sum + (course ? course.price : 0);
     }, 0);
