@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 
-const UserSignup = () => {
+const UserSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -25,13 +23,11 @@ const UserSignup = () => {
     const newUser = {
       email: email,
       password: password,
-      firstName: firstName,
-      lastName: lastName,
     };
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/signup`,
+        `${import.meta.env.VITE_API_URL}/user/signin`,
         newUser,
         { withCredentials: true }
       );
@@ -49,8 +45,6 @@ const UserSignup = () => {
 
     setEmail("");
     setPassword("");
-    setFirstName("");
-    setLastName("");
   };
 
   return (
@@ -78,25 +72,7 @@ const UserSignup = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
-          <h3>FirstName</h3>
-          <input
-            required
-            type="text"
-            placeholder="john"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-
-          <h3>Lastname</h3>
-          <input
-            type="text"
-            placeholder="doe"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-
-          <button type="submit">Sign Up</button>
+          <button type="submit">Sign In</button>
           {error && <p>{error}</p>}
         </form>
       </div>
@@ -104,4 +80,4 @@ const UserSignup = () => {
   );
 };
 
-export default UserSignup;
+export default UserSignin;

@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
 import axios from "axios";
+import AdminContext from "../context/AdminContext";
 
-const UserSignup = () => {
+const AdminSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
@@ -11,18 +11,18 @@ const UserSignup = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const context = useContext(UserContext);
+  const context = useContext(AdminContext);
 
   if (!context) {
     throw new Error("useUser must be used within a UserProvider");
   }
 
-  const { setUser } = context;
+  const { setAdmin } = context;
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newUser = {
+    const newAdmin = {
       email: email,
       password: password,
       firstName: firstName,
@@ -31,26 +31,33 @@ const UserSignup = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/signup`,
-        newUser,
+        `${import.meta.env.VITE_API_URL}/admin/signup`,
+        newAdmin,
         { withCredentials: true }
       );
 
       if (response.status === 200) {
         const data = response.data;
-        setUser(data.user);
+        setAdmin(data.admin);
         navigate("/home");
       }
-    } catch (error) {
-      console.log(error);
-      console.error(error);
-      setError("Signup failed. Please try again");
+    } catch (error: unknown) {
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("Signup failed. Please try again");
+      }
     }
 
-    setEmail("");
-    setPassword("");
-    setFirstName("");
-    setLastName("");
+    // setEmail("");
+    // setPassword("");
+    // setFirstName("");
+    // setLastName("");
   };
 
   return (
@@ -104,4 +111,4 @@ const UserSignup = () => {
   );
 };
 
-export default UserSignup;
+export default AdminSignup;
