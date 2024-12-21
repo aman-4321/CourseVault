@@ -7,12 +7,13 @@ import { apiUrl } from "../config";
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<number>(500);
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const context = useContext(CourseContext);
 
   if (!context) {
@@ -23,7 +24,7 @@ const CreateCourse = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     setError("");
 
     const newCourse = {
@@ -46,10 +47,10 @@ const CreateCourse = () => {
       setError(
         axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
-          : "Failed to create course"
+          : "Failed to create course",
       );
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
 
     setTitle("");
@@ -59,7 +60,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div>
+    <div className="flex pl-10 pt-10">
       <div>
         <form
           onSubmit={(e) => {
@@ -88,7 +89,7 @@ const CreateCourse = () => {
           <input
             required
             type="number"
-            placeholder="Marketing Course"
+            placeholder="4999"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
           />
@@ -102,10 +103,18 @@ const CreateCourse = () => {
             onChange={(e) => setImageUrl(e.target.value)}
           />
 
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Course"}
+          <button
+            disabled={loading}
+            type="submit"
+            className={`${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black hover:bg-gray-800"
+            } text-white px-4 py-2 rounded transition-colors `}
+          >
+            {loading ? "Creating Course..." : "Create Course"}
           </button>
-          {error && <p>{error}</p>}
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
       </div>
     </div>

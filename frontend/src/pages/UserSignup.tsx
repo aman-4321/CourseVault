@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
 import axios from "axios";
+import useUser from "../hooks/useUser";
+import { apiUrl } from "../config";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
@@ -9,18 +10,15 @@ const UserSignup = () => {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const context = useContext(UserContext);
 
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
-
-  const { setUser } = context;
+  const { setUser } = useUser();
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const newUser = {
       email: email,
@@ -30,15 +28,12 @@ const UserSignup = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/signup`,
-        newUser,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${apiUrl}/user/signup`, newUser, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
-        const data = response.data;
-        setUser(data.user);
+        setUser(response.data.user);
         navigate("/home");
       }
     } catch (error) {
@@ -47,6 +42,8 @@ const UserSignup = () => {
       } else {
         setError("Signup failed. Please try again");
       }
+    } finally {
+      setLoading(false);
     }
 
     setEmail("");
@@ -98,7 +95,13 @@ const UserSignup = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
 
-          <button type="submit">Sign Up</button>
+          <button
+            disabled={loading}
+            className={`${loading ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-gray-800"} text-white px-4 py-2 rounded transition-colors`}
+            type="submit"
+          >
+            Sign Up
+          </button>
           {error && <p>{error}</p>}
         </form>
       </div>

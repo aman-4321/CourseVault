@@ -6,10 +6,7 @@ interface UserContextType {
   setUser: (user: User | null) => void;
 }
 
-const UserContext = createContext<UserContextType>({
-  user: null,
-  setUser: () => {},
-});
+const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

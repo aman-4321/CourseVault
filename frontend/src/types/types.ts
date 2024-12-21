@@ -24,5 +24,4 @@ export interface Course {
   description: string;
   price: number;
   imageUrl: string;
-  creatorId: string;
 }

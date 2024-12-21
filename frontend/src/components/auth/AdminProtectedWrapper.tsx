@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminContext from "../../context/AdminContext";
 import axios from "axios";
+import { apiUrl } from "../../config";
+import useAdmin from "../../hooks/useAdmin";
 
 export const AdminProtectedWrapper = ({
   children,
@@ -10,23 +11,15 @@ export const AdminProtectedWrapper = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const context = useContext(AdminContext);
 
-  if (!context) {
-    throw new Error("AdminContext is not found");
-  }
-
-  const { setAdmin } = context;
+  const { setAdmin } = useAdmin();
 
   useEffect(() => {
     const verifyAdmin = async () => {
       try {
-        const respone = await axios.get(
-          `${import.meta.env.VITE_API_URL}/admin/profile`,
-          {
-            withCredentials: true,
-          },
-        );
+        const respone = await axios.get(`${apiUrl}/admin/profile`, {
+          withCredentials: true,
+        });
 
         if (respone.data.admin) {
           setAdmin(respone.data.admin);
@@ -35,7 +28,7 @@ export const AdminProtectedWrapper = ({
         }
       } catch (err) {
         console.error(err);
-        navigate("/");
+        navigate("/admin-signin");
       } finally {
         setIsLoading(false);
       }

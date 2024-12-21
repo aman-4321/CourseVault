@@ -140,7 +140,7 @@ export const CreateCourse = async (req: Request, res: Response) => {
 
   const { title, price, imageUrl, description } = data;
 
-  const creatorId = req.userId;
+  const creatorId = req.admin._id;
 
   try {
     const course = await Course.create({
@@ -186,7 +186,7 @@ export const UpdateCourse = async (req: Request, res: Response) => {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       { ...data },
-      { new: true },
+      { new: true }
     );
 
     if (!updatedCourse) {
@@ -267,7 +267,7 @@ export const AdminEarnings = async (req: Request, res: Response) => {
 
     const totalEarnings = purchases.reduce((sum, purchase) => {
       const course = courses.find((course) =>
-        course._id.equals(purchase.courseId),
+        course._id.equals(purchase.courseId)
       );
       return sum + (course ? course.price : 0);
     }, 0);
@@ -286,6 +286,33 @@ export const AdminEarnings = async (req: Request, res: Response) => {
   }
 };
 
+// get all course made by admin
+
+export const getAdminAllCourses = async (req: Request, res: Response) => {
+  try {
+    const courses = await Course.find({ creatorId: req.admin._id });
+
+    if (!courses.length) {
+      res.status(404).json({
+        message: 'No Course found',
+        courses: [],
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Courses fetched successfully',
+      courses,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Error fetching courses',
+      error: err,
+    });
+  }
+};
+
+// get profile
 export const GetAdminProfile = async (req: Request, res: Response) => {
   res.status(200).json({
     admin: req.admin,

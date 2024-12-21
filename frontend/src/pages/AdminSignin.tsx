@@ -1,24 +1,22 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AdminContext from "../context/AdminContext";
+import useAdmin from "../hooks/useAdmin";
+import { apiUrl } from "../config";
 
 const AdminSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const context = useContext(AdminContext);
 
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
-
-  const { setAdmin } = context;
+  const { setAdmin } = useAdmin();
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const newAdmin = {
       email: email,
@@ -26,15 +24,12 @@ const AdminSignin = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/admin/signin`,
-        newAdmin,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${apiUrl}/admin/signin`, newAdmin, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
-        const data = response.data;
-        setAdmin(data.admin);
+        setAdmin(response.data.admin);
         navigate("/home");
       }
     } catch (error: unknown) {
@@ -43,6 +38,8 @@ const AdminSignin = () => {
       } else {
         setError("Signup failed. Please try again");
       }
+    } finally {
+      setLoading(false);
     }
 
     setEmail("");
@@ -75,8 +72,18 @@ const AdminSignin = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Sign In</button>
-          {error && <p>{error}</p>}
+          <button
+            disabled={loading}
+            type="submit"
+            className={`${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black hover:bg-gray-800"
+            } text-white px-4 py-2 rounded transition-colors `}
+          >
+            {loading ? "Siging in..." : "Sign in"}
+          </button>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
       </div>
     </div>

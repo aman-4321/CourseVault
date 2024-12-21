@@ -5,6 +5,7 @@ import {
   AdminSignup,
   CreateCourse,
   DeleteCourse,
+  getAdminAllCourses,
   GetAdminProfile,
   UpdateCourse,
 } from '../controller/admin.controller';
@@ -25,3 +26,5 @@ AdminRouter.delete('/course/:courseId', adminMiddleware, DeleteCourse);
 AdminRouter.get('/earnings', adminMiddleware, AdminEarnings);
 
 AdminRouter.get('/profile', adminMiddleware, GetAdminProfile);
+
+AdminRouter.get('/courses', adminMiddleware, getAdminAllCourses);
