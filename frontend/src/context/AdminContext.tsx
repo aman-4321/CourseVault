@@ -6,10 +6,7 @@ interface AdminContextType {
   setAdmin: (admin: Admin | null) => void;
 }
 
-const AdminContext = createContext<AdminContextType>({
-  admin: null,
-  setAdmin: () => {},
-});
+const AdminContext = createContext<AdminContextType | null>(null);
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [admin, setAdmin] = useState<Admin | null>(null);

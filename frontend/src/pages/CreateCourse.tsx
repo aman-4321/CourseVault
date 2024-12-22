@@ -7,7 +7,7 @@ import { apiUrl } from "../config";
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>(500);
+  const [price, setPrice] = useState<number>();
   const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ const CreateCourse = () => {
     throw new Error("Course Context not provided");
   }
 
-  const { setCourse } = context;
+  const { setCourses } = context;
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,14 +40,14 @@ const CreateCourse = () => {
       });
 
       if (response.status === 200) {
-        setCourse(response.data.course);
+        setCourses(response.data.course);
         navigate("/home");
       }
     } catch (error: unknown) {
       setError(
         axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
-          : "Failed to create course",
+          : "Failed to create course"
       );
     } finally {
       setLoading(false);
