@@ -287,7 +287,6 @@ export const AdminEarnings = async (req: Request, res: Response) => {
 };
 
 // get all course made by admin
-
 export const getAdminAllCourses = async (req: Request, res: Response) => {
   try {
     const courses = await Course.find({ creatorId: req.admin._id });

@@ -16,11 +16,13 @@ const courseSchema = new Schema({
   price: {
     type: Number,
     default: 0,
+    required: true,
   },
 
   imageUrl: {
     type: String,
     trim: true,
+    required: true,
   },
 
   creatorId: {

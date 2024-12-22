@@ -3,6 +3,6 @@ import { AllCourses, SpecificCourse } from '../controller/course.controller';
 
 export const CourseRouter = express.Router();
 
-CourseRouter.get('/course', AllCourses);
+CourseRouter.get('/all', AllCourses);
 
-CourseRouter.get('/course/:courseId', SpecificCourse);
+CourseRouter.get('/:courseId', SpecificCourse);
