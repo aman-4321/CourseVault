@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import useUser from "../hooks/useUser";
+import { Book, Lightbulb, Rocket } from "lucide-react";
 import { apiUrl } from "../config";
 
-const UserSignup = () => {
+const MinimalistSplitScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,18 +14,11 @@ const UserSignup = () => {
 
   const navigate = useNavigate();
 
-  const { setUser } = useUser();
-
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const newUser = {
-      email: email,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-    };
+    const newUser = { email, password, firstName, lastName };
 
     try {
       const response = await axios.post(`${apiUrl}/user/signup`, newUser, {
@@ -33,7 +26,6 @@ const UserSignup = () => {
       });
 
       if (response.status === 200) {
-        setUser(response.data.user);
         navigate("/home");
       }
     } catch (error) {
@@ -53,60 +45,141 @@ const UserSignup = () => {
   };
 
   return (
-    <div className="flex w-full min-h-screen">
-      <div className="justify-center px-10 py-10">
-        <form
-          onSubmit={(e) => {
-            submitHandler(e);
-          }}
-        >
-          <h3>Email</h3>
-          <input
-            required
-            type="email"
-            placeholder="johndoes@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <h3>Enter a Password</h3>
-          <input
-            required
-            type="password"
-            placeholder="*********"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <h3>FirstName</h3>
-          <input
-            required
-            type="text"
-            placeholder="john"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-
-          <h3>Lastname</h3>
-          <input
-            type="text"
-            placeholder="doe"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-
+    <div className="min-h-screen flex">
+      <div className="w-1/2 bg-[#fffdf1] flex flex-col justify-center items-center p-12">
+        <h1 className="text-4xl font-bold mb-6 text-center">
+          Embark on Your Learning Journey
+        </h1>
+        <div className="space-y-8 w-full max-w-md">
+          <div className="flex items-center space-x-4">
+            <div className="bg-[#ffc36a] p-3 rounded-full">
+              <Book className="w-6 h-6 text-black" />
+            </div>
+            <div>
+              <h3 className="font-semibold">Diverse Courses</h3>
+              <p className="text-sm text-gray-600">
+                Explore a wide range of subjects
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="bg-[#ffc36a] p-3 rounded-full">
+              <Lightbulb className="w-6 h-6 text-black" />
+            </div>
+            <div>
+              <h3 className="font-semibold">Expert Instructors</h3>
+              <p className="text-sm text-gray-600">
+                Learn from industry professionals
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="bg-[#ffc36a] p-3 rounded-full">
+              <Rocket className="w-6 h-6 text-black" />
+            </div>
+            <div>
+              <h3 className="font-semibold">Grow Your Skills</h3>
+              <p className="text-sm text-gray-600">
+                Advance your career with new knowledge
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-1/2 bg-white flex flex-col justify-center items-center p-12">
+        <h2 className="text-3xl font-bold mb-6 text-center">Sign Up</h2>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        <form onSubmit={submitHandler} className="space-y-4 w-full max-w-md">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                First Name
+              </label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                required
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+              required
+            />
+          </div>
           <button
-            disabled={loading}
-            className={`${loading ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-gray-800"} text-white px-4 py-2 rounded transition-colors`}
             type="submit"
+            className="w-full bg-[#ffc36a] text-black py-2 rounded-md hover:bg-[#ffb347] transition duration-200 disabled:opacity-50"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? "Embarking..." : "Start Your Journey"}
           </button>
-          {error && <p>{error}</p>}
         </form>
+        <div className="mt-6 text-center">
+          <p className="mb-2">
+            Already on board?{" "}
+            <Link to="/user-signin" className="text-[#ffb347] hover:underline">
+              Sign in
+            </Link>
+          </p>
+          <p>
+            <Link to="/admin-signup" className="text-[#ffb347] hover:underline">
+              Signup as a course creator
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default UserSignup;
+export default MinimalistSplitScreen;
