@@ -188,11 +188,56 @@ export const PurchaseCourse = async (req: Request, res: Response) => {
   }
 };
 
+// already purchased courses
+export const AlreadyPurchased = async (req: Request, res: Response) => {
+  const userId = req.userId;
+  const { courseId } = req.params;
+
+  try {
+    const course = await Course.findById(courseId);
+    if (!course) {
+      res.status(404).json({
+        message: 'Course not found',
+      });
+      return;
+    }
+
+    const existingPurchase = await Purchase.findOne({
+      userId: userId,
+      courseId: courseId,
+    });
+
+    if (existingPurchase) {
+      res.status(200).json({
+        purchased: true,
+        message: 'Course already purchased',
+      });
+      return;
+    } else {
+      res.status(200).json({
+        purchased: false,
+        message: 'Course not purchased',
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: 'Error checking the purchased course',
+      error: err,
+    });
+  }
+};
+
 // get all purchased courses
 export const GetAllPurchasedCourse = async (req: Request, res: Response) => {
   const userId = req.userId;
   try {
-    const user = await User.findById(userId).populate('purchases');
+    const user = await User.findById(userId).populate({
+      path: 'purchases',
+      populate: {
+        path: 'courseId',
+        model: 'Course',
+      },
+    });
 
     if (!user || user.purchases.length === 0) {
       res.status(404).json({
@@ -205,10 +250,10 @@ export const GetAllPurchasedCourse = async (req: Request, res: Response) => {
       purchases: user.purchases,
     });
     return;
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       message: 'Error retrieving Courses',
-      error: err.message || err,
+      error: err,
     });
     return;
   }

@@ -20,12 +20,12 @@ const ExploreCourses = () => {
   return (
     <div className="w-full min-h-screen">
       <div className="flex justify-center">
-        <div>
+        <div className="space-y-4">
           {courses?.map((course) => {
             return (
               <div
                 key={course._id}
-                className="flex flex-col space-y-4 pt-2 pb-2 border-black border-2 cursor-pointer"
+                className="flex rounded flex-col space-y-4 pt-2 pb-2 border-black border-2 cursor-pointer"
                 onClick={() => navigate(`/course/${course._id}`)}
               >
                 <p>{course.title}</p>

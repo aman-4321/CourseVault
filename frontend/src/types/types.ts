@@ -20,9 +20,11 @@ export interface Admin {
 }
 
 export interface Course {
-  _id: number;
+  _id: string;
   title: string;
   description: string;
   price: number;
   imageUrl: string;
+  creatorId: string;
+  __v: number;
 }

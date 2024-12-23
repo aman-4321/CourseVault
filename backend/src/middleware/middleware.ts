@@ -41,7 +41,7 @@ export const userMiddleware = async (
       return;
     }
 
-    req.userId = decoded._id;
+    req.userId = decoded.userId;
     req.user = user;
     return next();
   } catch (err) {
@@ -83,7 +83,7 @@ export const adminMiddleware = async (
       return;
     }
 
-    req.userId = decoded._id;
+    req.userId = decoded.adminId;
     req.admin = admin;
     return next();
   } catch (err) {

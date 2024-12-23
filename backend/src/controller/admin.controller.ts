@@ -277,10 +277,10 @@ export const AdminEarnings = async (req: Request, res: Response) => {
       totalEarnings,
     });
     return;
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       message: 'Error calculating earnings',
-      error: err.message || err,
+      error: err,
     });
     return;
   }

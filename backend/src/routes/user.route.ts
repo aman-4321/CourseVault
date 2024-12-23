@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  AlreadyPurchased,
   GetAllPurchasedCourse,
   GetUserProfile,
   PurchaseCourse,
@@ -25,3 +26,5 @@ UserRouter.put('/update', userMiddleware, UpdateUserInfo);
 UserRouter.post('/logout', userMiddleware, UserLogout);
 
 UserRouter.get('/profile', userMiddleware, GetUserProfile);
+
+UserRouter.get('/check/:courseId', userMiddleware, AlreadyPurchased);
