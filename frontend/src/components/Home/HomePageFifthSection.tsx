@@ -23,15 +23,15 @@ const teachers = [
 
 const HomePageFifthSection: React.FC = () => {
   return (
-    <section className="bg-black text-white py-20 relative overflow-hidden">
+    <section className="bg-black text-white py-44 relative overflow-hidden">
       <img
         src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64deb3036d3047f72fd26135_Abstract%20%3A%20Teachers%20Top.svg"
-        className="absolute top-0 left-0 w-1/4 h-auto"
+        className="absolute top-0 left-0 size-[10rem]"
         alt="Top left abstract"
       />
       <img
         src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64deb303f3b0b6254face0ba_Abstract%20Teachers%20Bottom.svg"
-        className="absolute bottom-0 right-0 w-1/4 h-auto"
+        className="absolute bottom-0 right-0 size-[13rem]"
         alt="Bottom right abstract"
       />
       <div className="container mx-auto px-4 relative z-10">
@@ -44,14 +44,14 @@ const HomePageFifthSection: React.FC = () => {
               <img
                 src={teacher.image}
                 alt={teacher.name}
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                className="w-full h-[20rem] object-cover rounded-lg mb-4"
               />
               <p className="text-gray-400 text-sm">{teacher.skill}</p>
               <p className="font-semibold text-lg">{teacher.name}</p>
             </div>
           ))}
           <div className="flex items-center justify-center w-64">
-            <button className="bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded transition-colors duration-300">
+            <button className="bg-[#ffc36a] text-black text-lg py-3 px-20 rounded transition-colors duration-300 mt-32">
               Meet all
             </button>
           </div>

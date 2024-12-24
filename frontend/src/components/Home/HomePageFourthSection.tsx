@@ -1,5 +1,3 @@
-"use client";
-
 const cards = [
   {
     title: "Figma Basics",
@@ -29,12 +27,12 @@ const cards = [
 
 const HomePageFourthSection = () => {
   return (
-    <section className="py-20 w-full">
+    <section className="py-20 w-full bg-[#fefdf8] min-h-screen mb-52">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
+        <h1 className="text-2xl md:text-5xl font-medium text-center mb-12">
           Leave 9-5 by joining one of our courses
         </h1>
-        <div className="space-y-8">
+        <div className="space-y-8 bg-[#fffdf1] w-full px-[16rem] h-10">
           {cards.map((item, index) => (
             <div
               key={index}
@@ -59,7 +57,9 @@ const HomePageFourthSection = () => {
             </div>
           ))}
           <div className="flex justify-center">
-            <button className="pt-20 text-black">See all courses</button>
+            <button className="bg-[#ffc36a] px-6 py-4 text-lg rounded-lg hover:scale-105 transition-all duration-200">
+              See all Courses
+            </button>
           </div>
         </div>
       </div>

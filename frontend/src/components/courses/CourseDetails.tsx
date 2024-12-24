@@ -5,6 +5,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSpecificCourse } from "../../hooks/useCourses";
 import useAdmin from "../../hooks/useAdmin";
 import useUser from "../../hooks/useUser";
+import {
+  Book,
+  DollarSign,
+  User,
+  AlertCircle,
+  Loader,
+  CheckCircle,
+} from "lucide-react";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -71,33 +79,100 @@ const CourseDetails = () => {
   };
 
   if (error) {
-    return <div>Error in opening course</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#fffdf1]">
+        <div className="text-red-500 flex items-center space-x-2">
+          <AlertCircle size={24} />
+          <span>Error in opening course</span>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#fffdf1]">
+        <div className="text-[#ffc36a] flex items-center space-x-2">
+          <Loader className="animate-spin" size={24} />
+          <span>Loading course details...</span>
+        </div>
+      </div>
+    );
   }
 
   const isCreator = currentUser?._id === currentCourse?.creatorId;
 
   return (
-    <div className="flex justify-center w-full min-h-screen flex-col items-center">
-      <p>{currentCourse?.title}</p>
-      <p>{currentCourse?.description}</p>
-      <p>{currentCourse?.price}</p>
-      <p>{currentCourse?.imageUrl}</p>
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#fffdf1]">
+      <main className="flex-grow p-8 md:w-2/3">
+        <h1 className="text-3xl font-bold mb-6">{currentCourse?.title}</h1>
+        <img
+          src={
+            currentCourse?.imageUrl || "/placeholder.svg?height=400&width=600"
+          }
+          alt={currentCourse?.title}
+          className="w-full h-64 object-cover rounded-lg mb-6"
+        />
+        <div className="space-y-6">
+          <section>
+            <h2 className="text-2xl font-semibold mb-2">Course Description</h2>
+            <p className="text-gray-700">{currentCourse?.description}</p>
+          </section>
+          {/* Add more sections here for course content, syllabus, etc. */}
+        </div>
+      </main>
 
-      {!alreadyPurchased && !isCreator && (
-        <button
-          className="bg-gray-900 hover:bg-black text-white px-4 py-2 rounded"
-          onClick={purchase}
-          disabled={isPurchasing}
-        >
-          {isPurchasing ? "Purchasing..." : "Purchase course"}
-        </button>
-      )}
-      {alreadyPurchased && <p>You have already purchased this course</p>}
-      {isCreator && <p>You are the creator of this course</p>}
+      <aside className="md:w-1/3 p-8">
+        <div className="sticky top-8">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-bold mb-4">Course Details</h2>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Book className="text-[#ffc36a]" size={20} />
+                <span className="text-gray-700">{currentCourse?.title}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <DollarSign className="text-[#ffc36a]" size={20} />
+                <span className="text-2xl font-bold">
+                  ${currentCourse?.price}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <User className="text-[#ffc36a]" size={20} />
+                <span className="text-gray-700">
+                  {isCreator
+                    ? "You are the creator"
+                    : "Created by: [Creator Name]"}
+                </span>
+              </div>
+            </div>
+            {!alreadyPurchased && !isCreator && (
+              <button
+                className={`w-full mt-6 px-4 py-2 rounded text-white font-semibold ${
+                  isPurchasing
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-[#ffc36a] hover:bg-[#ffb347]"
+                } transition-colors`}
+                onClick={purchase}
+                disabled={isPurchasing}
+              >
+                {isPurchasing ? "Purchasing..." : "Purchase Course"}
+              </button>
+            )}
+            {alreadyPurchased && (
+              <div className="mt-6 flex items-center justify-center space-x-2 text-green-500">
+                <CheckCircle size={20} />
+                <span>You have purchased this course</span>
+              </div>
+            )}
+            {isCreator && (
+              <div className="mt-6 text-center text-gray-700">
+                You are the creator of this course
+              </div>
+            )}
+          </div>
+        </div>
+      </aside>
     </div>
   );
 };

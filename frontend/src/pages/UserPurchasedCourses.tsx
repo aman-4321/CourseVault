@@ -3,6 +3,7 @@ import { Course } from "../types/types";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../config";
+import { Book, DollarSign, Calendar, Loader, AlertCircle } from "lucide-react";
 
 interface Purchase {
   _id: string;
@@ -34,7 +35,7 @@ const UserPurchasedCourses = () => {
         if (axios.isAxiosError(err)) {
           setError(
             err.response?.data?.message ||
-              "Faild to fetch purchasedCourses of user"
+              "Failed to fetch purchased courses of user"
           );
         }
       } finally {
@@ -46,40 +47,89 @@ const UserPurchasedCourses = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full min-h-screen bg-[#fffdf1] flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-[#ffc36a]">
+          <Loader className="animate-spin" size={24} />
+          <span className="text-lg font-semibold">Loading your courses...</span>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error gettting all user courses</div>;
+    return (
+      <div className="w-full min-h-screen bg-[#fffdf1] flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-red-500">
+          <AlertCircle size={24} />
+          <span className="text-lg font-semibold">
+            Error getting your courses
+          </span>
+        </div>
+      </div>
+    );
   }
 
   if (!purchased || purchased.length === 0) {
-    return <div>No courses made yet</div>;
+    return (
+      <div className="w-full min-h-screen bg-[#fffdf1] flex items-center justify-center">
+        <div className="text-center">
+          <Book size={48} className="mx-auto text-gray-400 mb-4" />
+          <span className="text-xl font-semibold text-gray-600">
+            You haven't purchased any courses yet
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full min-h-screen">
-      <div className="flex justify-center">
-        <div>
-          <div className="space-y-4">
-            {purchased.map((purchase) => {
-              return (
-                <div
-                  key={purchase.courseId._id}
-                  className="flex rounded flex-col space-y-4 pt-2 pb-2 border-black border-2 cursor-pointer"
-                  onClick={() => {
-                    navigate(`/course/${purchase.courseId._id}`);
-                  }}
-                >
-                  <p>{purchase.courseId.title}</p>
-                  <p>{purchase.courseId.description}</p>
-                  <p>{purchase.courseId.price}</p>
-                  <p>{purchase.courseId.imageUrl}</p>
+    <div className="w-full min-h-screen bg-[#fffdf1] p-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">
+        Your Purchased Courses
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {purchased.map((purchase) => (
+          <div
+            key={purchase.courseId._id}
+            className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-200 hover:scale-105"
+            onClick={() => navigate(`/course/${purchase.courseId._id}`)}
+          >
+            <img
+              src={
+                purchase.courseId.imageUrl ||
+                "/placeholder.svg?height=200&width=400"
+              }
+              alt={purchase.courseId.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-2">
+                {purchase.courseId.title}
+              </h2>
+              <p className="text-gray-600 mb-4 line-clamp-2">
+                {purchase.courseId.description}
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2 text-[#ffc36a]">
+                  <DollarSign size={20} />
+                  <span className="text-lg font-bold">
+                    {purchase.courseId.price}
+                  </span>
                 </div>
-              );
-            })}
+                <div className="flex items-center space-x-2 text-gray-500">
+                  <Calendar size={20} />
+                  <span className="text-sm">
+                    Purchased on:{" "}
+                    {new Date(
+                      purchase._id.substring(0, 8)
+                    ).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

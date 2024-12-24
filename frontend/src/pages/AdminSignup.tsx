@@ -35,7 +35,7 @@ const AdminSignup = () => {
 
       if (response.status === 200) {
         setAdmin(response.data.admin);
-        navigate("/home");
+        navigate("/admin-dashboard");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.data?.message) {

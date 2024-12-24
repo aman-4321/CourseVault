@@ -5,27 +5,27 @@ const cardItem = [
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Trusted by thousands",
+    title: "Certificate awarded",
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Trusted by thousands",
+    title: "Made by professionals",
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Trusted by thousands",
+    title: "Available offline",
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Trusted by thousands",
+    title: "400+ hours of class",
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Trusted by thousands",
+    title: "Chat online",
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
@@ -41,10 +41,10 @@ const HomePageSecondSection = () => {
         {cardItem.map((item, index) => (
           <div
             key={index}
-            className="border-2 border-black p-8 rounded-2xl w-[27rem] bg-[#fffdf1] h-[20rem]"
+            className="border-2 border-black p-8 rounded-2xl w-[27rem] bg-[#fffdf1] h-[20rem] pt-28"
           >
-            <h2 className="text-xl font-semibold">{item.title}</h2>
-            <p>{item.description}</p>
+            <h2 className="text-2xl font-medium pb-4">{item.title}</h2>
+            <p className="text-lg">{item.description}</p>
           </div>
         ))}
       </div>
