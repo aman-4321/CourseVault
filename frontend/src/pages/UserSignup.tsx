@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Book, Lightbulb, Rocket } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { apiUrl } from "../config";
 
 const MinimalistSplitScreen = () => {

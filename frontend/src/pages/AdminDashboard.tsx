@@ -1,9 +1,9 @@
+import axios from "axios";
+import { Book, DollarSign, Edit3, Plus, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { apiUrl } from "../config";
 import { Course } from "../types/types";
-import { Book, DollarSign, Plus, Trash2, Edit3, User } from "lucide-react";
 
 const AdminDashboardCardTopNav = () => {
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ const AdminDashboardCardTopNav = () => {
         withCredentials: true,
       });
       setAdminCourses(
-        adminCourses?.filter((course) => course._id !== courseId) || []
+        adminCourses?.filter((course) => course._id !== courseId) || [],
       );
     } catch (err) {
       if (axios.isAxiosError(err)) {

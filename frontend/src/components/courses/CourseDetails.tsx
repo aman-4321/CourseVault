@@ -1,18 +1,18 @@
 import axios from "axios";
-import { apiUrl } from "../../config";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useSpecificCourse } from "../../hooks/useCourses";
-import useAdmin from "../../hooks/useAdmin";
-import useUser from "../../hooks/useUser";
 import {
-  Book,
-  DollarSign,
-  User,
   AlertCircle,
-  Loader,
+  Book,
   CheckCircle,
+  DollarSign,
+  Loader,
+  User,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { apiUrl } from "../../config";
+import useAdmin from "../../hooks/useAdmin";
+import { useSpecificCourse } from "../../hooks/useCourses";
+import useUser from "../../hooks/useUser";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -60,7 +60,7 @@ const CourseDetails = () => {
       const response = await axios.post(
         `${apiUrl}/user/purchase/${courseId}`,
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (response.status === 200) {
         alert("Course purchased successfully");

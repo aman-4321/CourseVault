@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import UserSignup from "./pages/UserSignup";
-import UserSignin from "./pages/UserSignin";
-import AdminSignup from "./pages/AdminSignup";
-import AdminSignin from "./pages/AdminSignin";
-import CreateCourse from "./pages/CreateCourse";
 import AdminProtectedWrapper from "./components/auth/AdminProtectedWrapper";
-import ExploreCourses from "./components/courses/ExploreCourses";
-import CourseDetails from "./components/courses/CourseDetails";
-import UserPurchasedCourses from "./pages/UserPurchasedCourses";
 import UserProtectedWrapper from "./components/auth/UserProtectedWrapper";
+import CourseDetails from "./components/courses/CourseDetails";
+import ExploreCourses from "./components/courses/ExploreCourses";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminSignin from "./pages/AdminSignin";
+import AdminSignup from "./pages/AdminSignup";
+import CreateCourse from "./pages/CreateCourse";
+import Home from "./pages/Home";
+import UserPurchasedCourses from "./pages/UserPurchasedCourses";
+import UserSignin from "./pages/UserSignin";
+import UserSignup from "./pages/UserSignup";
 
 function App() {
   return (

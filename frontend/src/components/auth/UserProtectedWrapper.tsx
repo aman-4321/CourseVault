@@ -1,7 +1,7 @@
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import axios from "axios";
 
 const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +21,7 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
           `${import.meta.env.VITE_API_URL}/user/profile`,
           {
             withCredentials: true,
-          }
+          },
         );
 
         if (response.data.user) {
@@ -31,7 +31,7 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (err) {
         console.error(err);
-        navigate("/");
+        navigate("/user-signin");
       } finally {
         setIsLoading(false);
       }

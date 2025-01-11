@@ -1,9 +1,9 @@
+import axios from "axios";
+import { Book, DollarSign, Rocket, Users } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import useAdmin from "../hooks/useAdmin";
 import { apiUrl } from "../config";
-import { Book, Users, DollarSign, Rocket } from "lucide-react";
+import useAdmin from "../hooks/useAdmin";
 
 const AdminSignup = () => {
   const [email, setEmail] = useState("");

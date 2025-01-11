@@ -1,11 +1,11 @@
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { type Express } from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import { ConnectToDb } from './db/db';
-import { UserRouter } from './routes/user.route';
-import { CourseRouter } from './routes/routes.course';
 import { AdminRouter } from './routes/routes.admin';
+import { CourseRouter } from './routes/routes.course';
+import { UserRouter } from './routes/user.route';
 
 const app: Express = express();
 

@@ -29,14 +29,14 @@ const HomePageFourthSection = () => {
   return (
     <section className="py-20 w-full bg-[#fefdf8] min-h-screen mb-52">
       <div className="container mx-auto px-4">
-        <h1 className="text-2xl md:text-5xl font-medium text-center mb-12">
+        <h1 className="text-5xl font-medium text-center mb-12">
           Leave 9-5 by joining one of our courses
         </h1>
-        <div className="space-y-8 bg-[#fffdf1] w-full px-[16rem] h-10">
+        <div className="space-y-8 w-[90rem] px-[16rem] h-10">
           {cards.map((item, index) => (
             <div
               key={index}
-              className="border-2 border-black rounded-lg p-6 grid grid-cols-1 md:grid-cols-[2fr,1px,1fr] gap-6"
+              className="h-[22rem] border-2 border-black rounded-3xl p-6 grid grid-cols-1 md:grid-cols-[2fr,1px,1fr] gap-6 bg-[#fffdf1] ml-20"
             >
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold">{item.title}</h2>

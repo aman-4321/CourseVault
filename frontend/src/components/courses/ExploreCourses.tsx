@@ -1,6 +1,6 @@
+import { AlertCircle, Book, DollarSign, Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAllCourses } from "../../hooks/useCourses";
-import { Book, DollarSign, Loader, AlertCircle } from "lucide-react";
 
 const ExploreCourses = () => {
   const { courses, error, loading } = useAllCourses();

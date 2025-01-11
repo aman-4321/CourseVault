@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { Course } from "../types/types";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { AlertCircle, Book, Calendar, DollarSign, Loader } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { apiUrl } from "../config";
-import { Book, DollarSign, Calendar, Loader, AlertCircle } from "lucide-react";
+import { Course } from "../types/types";
 
 interface Purchase {
   _id: string;
@@ -35,7 +35,7 @@ const UserPurchasedCourses = () => {
         if (axios.isAxiosError(err)) {
           setError(
             err.response?.data?.message ||
-              "Failed to fetch purchased courses of user"
+              "Failed to fetch purchased courses of user",
           );
         }
       } finally {
@@ -122,7 +122,7 @@ const UserPurchasedCourses = () => {
                   <span className="text-sm">
                     Purchased on:{" "}
                     {new Date(
-                      purchase._id.substring(0, 8)
+                      purchase._id.substring(0, 8),
                     ).toLocaleDateString()}
                   </span>
                 </div>

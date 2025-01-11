@@ -1,9 +1,9 @@
+import axios from "axios";
+import { AlertCircle, Book, DollarSign, Image } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CourseContext } from "../context/CourseContext";
-import axios from "axios";
 import { apiUrl } from "../config";
-import { Book, DollarSign, Image, AlertCircle } from "lucide-react";
+import { CourseContext } from "../context/CourseContext";
 
 const CreateCourseSplitScreen = () => {
   const [title, setTitle] = useState("");
@@ -48,7 +48,7 @@ const CreateCourseSplitScreen = () => {
       setError(
         axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
-          : "Failed to create course"
+          : "Failed to create course",
       );
     } finally {
       setLoading(false);
