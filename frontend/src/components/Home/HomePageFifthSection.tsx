@@ -1,5 +1,3 @@
-import React from "react";
-
 const teachers = [
   {
     image:
@@ -40,11 +38,11 @@ const HomePageFifthSection: React.FC = () => {
         </h2>
         <div className="flex flex-wrap justify-center items-start gap-8">
           {teachers.map((teacher, index) => (
-            <div key={index} className="flex flex-col items-center w-64">
+            <div key={index} className="flex flex-col items-center">
               <img
                 src={teacher.image}
                 alt={teacher.name}
-                className="w-full h-[20rem] object-cover rounded-lg mb-4"
+                className="object-cover rounded-lg mb-4 h-[23rem] w-[21rem]"
               />
               <p className="text-gray-400 text-sm">{teacher.skill}</p>
               <p className="font-semibold text-lg">{teacher.name}</p>

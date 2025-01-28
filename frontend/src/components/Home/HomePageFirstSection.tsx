@@ -1,7 +1,7 @@
 const HomePageFirstSection = () => {
   return (
     <div>
-      <div className="flex flex-row">
+      <div className="flex flex-row pt-28">
         <div className="pt-52 pl-60">
           <div className="font-medium text-7xl">
             <p className="mb-2">Unlock skills.</p>
@@ -12,14 +12,17 @@ const HomePageFirstSection = () => {
             <p>courses from the leading teachers in</p>
             <p>their industries</p>
           </div>
-          <button className="bg-[#ffc36a] px-7 py-4 text-2xl font-light rounded-lg mt-12 hover:scale-105 transition-all duration-200">
-            Explore courses
-          </button>
+          <div className="flex">
+            <button className="bg-[#ffc36a] px-7 py-4 text-2xl font-light rounded-lg mt-12 hover:scale-105 transition-all duration-200">
+              Explore courses
+            </button>
+            <p className="mt-16 pl-5 text-lg">Trusted over 10,000 students </p>
+          </div>
         </div>
         <div className="size-[55rem] pl-72 pt-20">
           <img
             src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64ddece6b7dad0d3ddf6ee1c_Abstract%20Hero%20Home.svg"
-            className="absolute top-[7rem] right-[15rem] "
+            className="absolute top-[9rem] right-[10rem] "
           />
           <img
             src="/hero.png"

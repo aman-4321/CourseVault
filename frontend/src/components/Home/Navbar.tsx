@@ -4,7 +4,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row h-20 border-black border-b pt-5">
+    <div className="fixed top-0 w-full bg-[#fffdf1] z-50 flex flex-row h-20 border-black border-b pt-5">
       <div
         className="font-medium pr-[40rem] text-3xl pl-44 cursor-pointer"
         onClick={() => {

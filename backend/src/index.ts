@@ -31,4 +31,6 @@ app.use('/api/v1/user', UserRouter);
 app.use('/api/v1/course', CourseRouter);
 app.use('/api/v1/admin', AdminRouter);
 
-app.listen(port);
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});

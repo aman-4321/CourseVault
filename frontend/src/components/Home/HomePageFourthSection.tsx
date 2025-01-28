@@ -27,30 +27,30 @@ const cards = [
 
 const HomePageFourthSection = () => {
   return (
-    <section className="py-20 w-full bg-[#fefdf8] min-h-screen mb-52">
+    <section className="py-20 w-full bg-[#fefdf8] min-h-screen">
       <div className="container mx-auto px-4">
         <h1 className="text-5xl font-medium text-center mb-12">
           Leave 9-5 by joining one of our courses
         </h1>
-        <div className="space-y-8 w-[90rem] px-[16rem] h-10">
+        <div className="space-y-8 max-w-[90rem] mx-auto">
           {cards.map((item, index) => (
             <div
               key={index}
-              className="h-[22rem] border-2 border-black rounded-3xl p-6 grid grid-cols-1 md:grid-cols-[2fr,1px,1fr] gap-6 bg-[#fffdf1] ml-20"
+              className="h-[22rem] border-2 border-black rounded-3xl p-16 grid grid-cols-1 md:grid-cols-[2fr,1px,1fr] gap-6 bg-[#fffdf1] ml-20"
             >
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold">{item.title}</h2>
                 <p className="text-gray-600">{item.description}</p>
               </div>
-              <div className="hidden md:block w-px bg-gray-300 my-4"></div>
+              <div className="hidden md:block w-[2px] bg-black my-4"></div>
               <div className="space-y-4">
                 <p className="font-medium">{item.name}</p>
                 <p className="text-xl font-bold">{item.money}</p>
                 <p className="text-gray-600">{item.hours}</p>
                 <div className="pt-4">
                   <p className="font-medium">Certificate</p>
-                  <button className="mt-2 w-full">
-                    <p className="mr-2 h-4 w-4" /> Download Offline
+                  <button className="mt-2">
+                    <p className="" /> Download Offline
                   </button>
                 </div>
               </div>
