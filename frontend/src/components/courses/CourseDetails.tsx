@@ -3,8 +3,9 @@ import {
   AlertCircle,
   Book,
   CheckCircle,
-  DollarSign,
+  Clock,
   Loader,
+  Star,
   User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -60,7 +61,7 @@ const CourseDetails = () => {
       const response = await axios.post(
         `${apiUrl}/user/purchase/${courseId}`,
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
       if (response.status === 200) {
         alert("Course purchased successfully");
@@ -81,9 +82,9 @@ const CourseDetails = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#fffdf1]">
-        <div className="text-red-500 flex items-center space-x-2">
+        <div className="text-red-500 flex items-center space-x-2 bg-white p-4 rounded-lg shadow-md">
           <AlertCircle size={24} />
-          <span>Error in opening course</span>
+          <span className="font-medium">Error in opening course</span>
         </div>
       </div>
     );
@@ -92,9 +93,9 @@ const CourseDetails = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#fffdf1]">
-        <div className="text-[#ffc36a] flex items-center space-x-2">
+        <div className="text-[#ffc36a] flex items-center space-x-2 bg-white p-4 rounded-lg shadow-md">
           <Loader className="animate-spin" size={24} />
-          <span>Loading course details...</span>
+          <span className="font-medium">Loading course details...</span>
         </div>
       </div>
     );
@@ -103,76 +104,167 @@ const CourseDetails = () => {
   const isCreator = currentUser?._id === currentCourse?.creatorId;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#fffdf1]">
-      <main className="flex-grow p-8 md:w-2/3">
-        <h1 className="text-3xl font-bold mb-6">{currentCourse?.title}</h1>
-        <img
-          src={
-            currentCourse?.imageUrl || "/placeholder.svg?height=400&width=600"
-          }
-          alt={currentCourse?.title}
-          className="w-full h-64 object-cover rounded-lg mb-6"
-        />
-        <div className="space-y-6">
-          <section>
-            <h2 className="text-2xl font-semibold mb-2">Course Description</h2>
-            <p className="text-gray-700">{currentCourse?.description}</p>
-          </section>
-          {/* Add more sections here for course content, syllabus, etc. */}
-        </div>
-      </main>
-
-      <aside className="md:w-1/3 p-8">
-        <div className="sticky top-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Course Details</h2>
+    <div className="min-h-screen bg-[#fffdf1]">
+      <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+        <main className="flex-grow lg:w-2/3 space-y-8">
+          <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
             <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Book className="text-[#ffc36a]" size={20} />
-                <span className="text-gray-700">{currentCourse?.title}</span>
+              <div className="flex items-center space-x-2 text-[#ffc36a]">
+                <Star size={20} />
+                <span className="text-sm font-medium">Featured Course</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <DollarSign className="text-[#ffc36a]" size={20} />
-                <span className="text-2xl font-bold">
-                  ${currentCourse?.price}
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <User className="text-[#ffc36a]" size={20} />
-                <span className="text-gray-700">
-                  {isCreator
-                    ? "You are the creator"
-                    : "Created by: [Creator Name]"}
-                </span>
+              <h1 className="text-4xl font-bold text-gray-900">
+                {currentCourse?.title}
+              </h1>
+              <div className="flex items-center space-x-4 text-gray-600">
+                <div className="flex items-center space-x-1">
+                  <Clock size={16} />
+                  <span>8 weeks</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Book size={16} />
+                  <span>12 modules</span>
+                </div>
               </div>
             </div>
-            {!alreadyPurchased && !isCreator && (
-              <button
-                className={`w-full mt-6 px-4 py-2 rounded text-white font-semibold ${
-                  isPurchasing
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-[#ffc36a] hover:bg-[#ffb347]"
-                } transition-colors`}
-                onClick={purchase}
-                disabled={isPurchasing}
-              >
-                {isPurchasing ? "Purchasing..." : "Purchase Course"}
-              </button>
-            )}
-            {alreadyPurchased && (
-              <div className="mt-6 flex items-center justify-center space-x-2 text-green-500">
-                <CheckCircle size={20} />
-                <span>You have purchased this course</span>
-              </div>
-            )}
-            {isCreator && (
-              <div className="mt-6 text-center text-gray-700">
-                You are the creator of this course
-              </div>
-            )}
+
+            <div className="aspect-video w-full overflow-hidden rounded-xl">
+              <img
+                src={
+                  currentCourse?.imageUrl ||
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=800&fit=crop"
+                }
+                alt={currentCourse?.title}
+                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  Course Description
+                </h2>
+                <p className="text-gray-700 leading-relaxed">
+                  {currentCourse?.description}
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  What You'll Learn
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    "Master key concepts",
+                    "Build real projects",
+                    "Learn best practices",
+                    "Get hands-on experience",
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <CheckCircle className="text-[#ffc36a]" size={16} />
+                      <span className="text-gray-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
-      </aside>
+        </main>
+
+        <aside className="lg:w-1/3">
+          <div className="sticky top-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-3xl font-bold text-gray-900">
+                    ${currentCourse?.price}
+                  </span>
+                  {alreadyPurchased && (
+                    <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">
+                      Purchased
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <Book className="text-[#ffc36a]" size={20} />
+                    <div>
+                      <h3 className="font-medium text-gray-900">
+                        Full Course Access
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Lifetime access to all content
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <User className="text-[#ffc36a]" size={20} />
+                    <div>
+                      <h3 className="font-medium text-gray-900">
+                        {isCreator ? "Course Creator" : "Course Instructor"}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {isCreator
+                          ? "You created this course"
+                          : "Expert instructor support"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {!alreadyPurchased && !isCreator && (
+                  <button
+                    className={`w-full px-6 py-3 rounded-xl text-white font-semibold transition-all transform hover:scale-[1.02] ${
+                      isPurchasing
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#ffc36a] hover:bg-[#ffb347] shadow-lg hover:shadow-xl"
+                    }`}
+                    onClick={purchase}
+                    disabled={isPurchasing}
+                  >
+                    {isPurchasing ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <Loader className="animate-spin" size={20} />
+                        <span>Processing...</span>
+                      </div>
+                    ) : (
+                      "Enroll Now"
+                    )}
+                  </button>
+                )}
+
+                {alreadyPurchased && (
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <div className="flex items-center space-x-2 text-green-600">
+                      <CheckCircle size={20} />
+                      <span className="font-medium">
+                        Course purchased successfully
+                      </span>
+                    </div>
+                    <p className="mt-2 text-sm text-green-600">
+                      You have full access to this course
+                    </p>
+                  </div>
+                )}
+
+                {isCreator && (
+                  <div className="bg-[#fff8e6] p-4 rounded-lg">
+                    <div className="flex items-center space-x-2 text-[#ffc36a]">
+                      <Star size={20} />
+                      <span className="font-medium">Course Creator</span>
+                    </div>
+                    <p className="mt-2 text-sm text-[#ffc36a]">
+                      You are the creator of this course
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };

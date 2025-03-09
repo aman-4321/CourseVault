@@ -54,67 +54,78 @@ const AdminSignup = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      <div className="w-1/2 bg-[#fffdf1] flex flex-col justify-center items-center p-12">
-        <h1 className="text-4xl font-bold mb-6 text-center">
-          Become a Course Creator
-        </h1>
-        <div className="space-y-8 w-full max-w-md">
-          <div className="flex items-center space-x-4">
-            <div className="bg-[#ffc36a] p-3 rounded-full">
-              <Book className="w-6 h-6 text-black" />
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Left Panel - Features */}
+      <div className="w-full md:w-1/2 bg-gradient-to-br from-[#fff8e1] to-[#fffdf1] flex flex-col justify-center items-center p-8 md:p-12 shadow-inner">
+        <div className="max-w-md w-full">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-amber-800">
+            Become a Course Creator
+          </h1>
+          <div className="space-y-8 w-full">
+            <div className="flex items-center space-x-5 transform transition hover:translate-x-2 duration-300">
+              <div className="bg-gradient-to-br from-[#ffc36a] to-[#ffb347] p-4 rounded-full shadow-md">
+                <Book className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">Share Your Expertise</h3>
+                <p className="text-gray-600">
+                  Create engaging courses in your field
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold">Share Your Expertise</h3>
-              <p className="text-sm text-gray-600">
-                Create engaging courses in your field
-              </p>
+            <div className="flex items-center space-x-5 transform transition hover:translate-x-2 duration-300">
+              <div className="bg-gradient-to-br from-[#ffc36a] to-[#ffb347] p-4 rounded-full shadow-md">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">
+                  Reach a Global Audience
+                </h3>
+                <p className="text-gray-600">Connect with learners worldwide</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="bg-[#ffc36a] p-3 rounded-full">
-              <Users className="w-6 h-6 text-black" />
+            <div className="flex items-center space-x-5 transform transition hover:translate-x-2 duration-300">
+              <div className="bg-gradient-to-br from-[#ffc36a] to-[#ffb347] p-4 rounded-full shadow-md">
+                <DollarSign className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">
+                  Earn from Your Knowledge
+                </h3>
+                <p className="text-gray-600">
+                  Monetize your skills and experience
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold">Reach a Global Audience</h3>
-              <p className="text-sm text-gray-600">
-                Connect with learners worldwide
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="bg-[#ffc36a] p-3 rounded-full">
-              <DollarSign className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <h3 className="font-semibold">Earn from Your Knowledge</h3>
-              <p className="text-sm text-gray-600">
-                Monetize your skills and experience
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="bg-[#ffc36a] p-3 rounded-full">
-              <Rocket className="w-6 h-6 text-black" />
-            </div>
-            <div>
-              <h3 className="font-semibold">Grow Your Brand</h3>
-              <p className="text-sm text-gray-600">
-                Establish yourself as an industry expert
-              </p>
+            <div className="flex items-center space-x-5 transform transition hover:translate-x-2 duration-300">
+              <div className="bg-gradient-to-br from-[#ffc36a] to-[#ffb347] p-4 rounded-full shadow-md">
+                <Rocket className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">Grow Your Brand</h3>
+                <p className="text-gray-600">
+                  Establish yourself as an industry expert
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-1/2 bg-white flex flex-col justify-center items-center p-12">
-        <div className="w-full max-w-md">
-          <h2 className="text-3xl font-bold mb-6 text-center">
+
+      {/* Right Panel - Signup Form */}
+      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-8 md:p-12">
+        <div className="max-w-md w-full">
+          <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
             Sign Up as a Creator
           </h2>
-          {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-          <form onSubmit={submitHandler} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md animate-pulse">
+              <p className="text-red-600">{error}</p>
+            </div>
+          )}
+          <form onSubmit={submitHandler} className="space-y-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="transition-all duration-200 focus-within:scale-105">
                 <label
                   htmlFor="firstName"
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -126,12 +137,12 @@ const AdminSignup = () => {
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc36a] focus:border-transparent shadow-sm"
                   required
                   placeholder="John"
                 />
               </div>
-              <div>
+              <div className="transition-all duration-200 focus-within:scale-105">
                 <label
                   htmlFor="lastName"
                   className="block text-sm font-medium text-gray-700 mb-1"
@@ -143,13 +154,13 @@ const AdminSignup = () => {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc36a] focus:border-transparent shadow-sm"
                   required
                   placeholder="Doe"
                 />
               </div>
             </div>
-            <div>
+            <div className="transition-all duration-200 focus-within:scale-105">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -161,12 +172,12 @@ const AdminSignup = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc36a] focus:border-transparent shadow-sm"
                 required
                 placeholder="johndoe@example.com"
               />
             </div>
-            <div>
+            <div className="transition-all duration-200 focus-within:scale-105">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -178,34 +189,60 @@ const AdminSignup = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc36a]"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ffc36a] focus:border-transparent shadow-sm"
                 required
                 placeholder="********"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-[#ffc36a] text-black py-2 rounded-md hover:bg-[#ffb347] transition duration-200 disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-[#ffc36a] to-[#ffb347] text-white font-medium py-3 px-4 rounded-lg hover:from-[#ffb347] hover:to-[#ffa41b] transition duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading}
             >
-              {loading ? "Creating Account..." : "Start Creating Courses"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Creating Account...
+                </span>
+              ) : (
+                "Start Creating Courses"
+              )}
             </button>
           </form>
-          <div className="mt-6 text-center">
-            <p className="mb-2">
+          <div className="mt-8 text-center space-y-3">
+            <p className="text-gray-600">
               Already a creator?{" "}
               <Link
                 to="/admin-signin"
-                className="text-[#ffb347] hover:underline"
+                className="text-amber-600 hover:text-amber-700 font-medium hover:underline transition-colors"
               >
                 Sign in
               </Link>
             </p>
-            <p>
+            <p className="text-gray-600">
               Want to learn instead?{" "}
               <Link
                 to="/user-signup"
-                className="text-[#ffb347] hover:underline"
+                className="text-amber-600 hover:text-amber-700 font-medium hover:underline transition-colors"
               >
                 Sign up as a student
               </Link>

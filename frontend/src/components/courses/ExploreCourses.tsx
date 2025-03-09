@@ -44,11 +44,20 @@ const ExploreCourses = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#fffdf1]">
       <Navbar />
-      <div className="w-full min-h-screen bg-[#fffdf1] p-8 pt-40">
-        <h1 className="text-3xl font-bold mb-8 text-center">Explore Courses</h1>
-        <div className="grid grid-cols-2 gap-8 max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 py-10 pt-28 md:pt-32">
+        <div className="max-w-3xl mx-auto mb-12 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            Explore Our Courses
+          </h1>
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+            Discover high-quality courses designed to help you advance your
+            skills and achieve your goals
+          </p>
+        </div>
+
+        <div className="max-w-5xl mx-auto space-y-10">
           {courses.map((course) => (
             <CourseCard
               key={course._id}

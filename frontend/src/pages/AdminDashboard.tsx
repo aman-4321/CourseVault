@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Book, DollarSign, Edit3, Plus, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiUrl } from "../config";
 import { Course } from "../types/types";
 
@@ -39,7 +39,7 @@ const AdminDashboardCardTopNav = () => {
         withCredentials: true,
       });
       setAdminCourses(
-        adminCourses?.filter((course) => course._id !== courseId) || [],
+        adminCourses?.filter((course) => course._id !== courseId) || []
       );
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -74,7 +74,7 @@ const AdminDashboardCardTopNav = () => {
             <div className="flex items-center">
               <button className="bg-[#ffc36a] text-black px-4 py-2 rounded-md hover:bg-[#ffb347] transition duration-200 flex items-center space-x-2">
                 <Plus size={20} />
-                <span>Add New Course</span>
+                <Link to="/create-course">Add New Course</Link>
               </button>
             </div>
           </div>

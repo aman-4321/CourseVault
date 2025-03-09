@@ -6,7 +6,7 @@ import {
   updateBody,
 } from '../types/validation';
 import { User } from '../models/user.model';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { USER_JWT_SECRET } from '../config';
 import mongoose from 'mongoose';
@@ -52,7 +52,7 @@ export const SignupUser = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '24h' });
 
-    res.cookie('token', token, {
+    res.cookie('userToken', token, {
       httpOnly: true,
       sameSite: 'strict',
     });
@@ -106,7 +106,7 @@ export const UserSignin = async (req: Request, res: Response) => {
       expiresIn: '24h',
     });
 
-    res.cookie('token', token, {
+    res.cookie('userToken', token, {
       httpOnly: true,
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000,

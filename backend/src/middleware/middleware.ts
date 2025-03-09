@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { Request, Response } from 'express';
-import { NextFunction } from 'express-serve-static-core';
+import { NextFunction, Request, Response } from 'express';
 import { ADMIN_JWT_SECRET, USER_JWT_SECRET } from '../config';
 import { User } from '../models/user.model';
 import { Admin } from '../models/admin.model';
@@ -23,7 +22,7 @@ export const userMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.token;
+  const token = req.cookies.userToken;
   if (!token) {
     res.status(401).json({
       message: 'Unauthorized',
@@ -65,7 +64,7 @@ export const adminMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.token;
+  const token = req.cookies.adminToken;
   if (!token) {
     res.status(401).json({
       message: 'Unauthorized',

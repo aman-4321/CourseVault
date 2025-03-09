@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import {
   CreateCourseBody,
   signinBody,
@@ -50,7 +50,7 @@ export const AdminSignup = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ adminId }, ADMIN_JWT_SECRET, { expiresIn: '24h' });
 
-    res.cookie('token', token, {
+    res.cookie('adminToken', token, {
       httpOnly: true,
       sameSite: 'strict',
     });
@@ -108,7 +108,7 @@ export const AdminSignin = async (req: Request, res: Response) => {
       expiresIn: '1h',
     });
 
-    res.cookie('token', token, {
+    res.cookie('adminToken', token, {
       httpOnly: true,
       sameSite: 'strict',
     });
@@ -186,7 +186,7 @@ export const UpdateCourse = async (req: Request, res: Response) => {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       { ...data },
-      { new: true },
+      { new: true }
     );
 
     if (!updatedCourse) {
@@ -267,7 +267,7 @@ export const AdminEarnings = async (req: Request, res: Response) => {
 
     const totalEarnings = purchases.reduce((sum, purchase) => {
       const course = courses.find((course) =>
-        course._id.equals(purchase.courseId),
+        course._id.equals(purchase.courseId)
       );
       return sum + (course ? course.price : 0);
     }, 0);
