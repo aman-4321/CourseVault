@@ -32,7 +32,7 @@ const HomePageFourthSection = () => {
         <h1 className="text-5xl font-medium text-center mb-12">
           Leave 9-5 by joining one of our courses
         </h1>
-        <div className="space-y-8 max-w-[90rem] mx-auto">
+        <div className="space-y-8 max-w-[65rem] mx-auto">
           {cards.map((item, index) => (
             <div
               key={index}

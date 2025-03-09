@@ -1,10 +1,10 @@
-import { AlertCircle, Book, DollarSign, Loader } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { AlertCircle, Book, Loader } from "lucide-react";
 import { useAllCourses } from "../../hooks/useCourses";
+import { Navbar } from "../Home/Navbar";
+import CourseCard from "./CourseCard";
 
 const ExploreCourses = () => {
   const { courses, error, loading } = useAllCourses();
-  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -44,43 +44,22 @@ const ExploreCourses = () => {
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#fffdf1] p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Explore Courses</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        {courses.map((course) => (
-          <div
-            key={course._id}
-            className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-200 hover:scale-105"
-            onClick={() => navigate(`/course/${course._id}`)}
-          >
-            <img
-              src={course.imageUrl || "/placeholder.svg?height=200&width=400"}
-              alt={course.title}
-              className="w-full h-48 object-cover"
+    <div>
+      <Navbar />
+      <div className="w-full min-h-screen bg-[#fffdf1] p-8 pt-40">
+        <h1 className="text-3xl font-bold mb-8 text-center">Explore Courses</h1>
+        <div className="grid grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {courses.map((course) => (
+            <CourseCard
+              key={course._id}
+              _id={course._id}
+              imageUrl={course.imageUrl}
+              title={course.title}
+              description={course.description}
+              price={course.price}
             />
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
-              <p className="text-gray-600 mb-4 line-clamp-2">
-                {course.description}
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2 text-[#ffc36a]">
-                  <DollarSign size={20} />
-                  <span className="text-lg font-bold">{course.price}</span>
-                </div>
-                <button
-                  className="bg-[#ffc36a] text-white px-4 py-2 rounded-md hover:bg-[#ffb347] transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/course/${course._id}`);
-                  }}
-                >
-                  View Course
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

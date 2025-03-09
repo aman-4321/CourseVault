@@ -1,6 +1,5 @@
 import HomePageFifthSection from "../components/Home/HomePageFifthSection";
 import HomePageFirstSection from "../components/Home/HomePageFirstSection";
-import HomePageFourthSection from "../components/Home/HomePageFourthSection";
 import HomePageLastSection from "../components/Home/HomePageLastSection";
 import HomePageSecondSection from "../components/Home/HomePageSecondSection";
 import HomePageSixthSection from "../components/Home/HomePageSixthSection";
@@ -16,7 +15,6 @@ const Home = () => {
       </div>
       <HomePageSecondSection></HomePageSecondSection>
       <HomePageThirdSection></HomePageThirdSection>
-      <HomePageFourthSection></HomePageFourthSection>
       <HomePageFifthSection></HomePageFifthSection>
       <HomePageSixthSection></HomePageSixthSection>
       <HomePageLastSection></HomePageLastSection>

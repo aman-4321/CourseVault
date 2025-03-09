@@ -22,7 +22,7 @@ const HomePageFirstSection = () => {
         <div className="size-[55rem] pl-72 pt-20">
           <img
             src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64ddece6b7dad0d3ddf6ee1c_Abstract%20Hero%20Home.svg"
-            className="absolute top-[9rem] right-[10rem] "
+            className="absolute top-[9rem] right-[13rem] "
           />
           <img
             src="/hero.png"

@@ -1,7 +1,10 @@
+import { config } from 'dotenv';
 import mongoose from 'mongoose';
 
+config();
+
 const DbConnection =
-  process.env.DB_CONNECT || 'mongodb://localhost:27017/course-selling';
+  process.env.MONGODB_URL || 'mongodb://localhost:27017/course-selling';
 
 export async function ConnectToDb() {
   try {
