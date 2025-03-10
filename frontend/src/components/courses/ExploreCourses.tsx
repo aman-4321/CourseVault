@@ -1,6 +1,6 @@
 import { AlertCircle, Book, Loader } from "lucide-react";
 import { useAllCourses } from "../../hooks/useCourses";
-import { Navbar } from "../Home/Navbar";
+import { Navbar } from "../Layout/Navbar";
 import CourseCard from "./CourseCard";
 
 const ExploreCourses = () => {

@@ -48,7 +48,7 @@ export const AdminSignup = async (req: Request, res: Response) => {
 
     const adminId = admin._id;
 
-    const token = jwt.sign({ adminId }, ADMIN_JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ adminId }, ADMIN_JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('adminToken', token, {
       httpOnly: true,
@@ -105,7 +105,7 @@ export const AdminSignin = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign({ adminId: admin._id }, ADMIN_JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '7d',
     });
 
     res.cookie('adminToken', token, {
@@ -316,4 +316,18 @@ export const GetAdminProfile = async (req: Request, res: Response) => {
   res.status(200).json({
     admin: req.admin,
   });
+};
+
+// logout
+
+export const AdminLogout = async (req: Request, res: Response) => {
+  res.clearCookie('adminToken', {
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+
+  res.status(200).json({
+    message: 'Logged out successfully',
+  });
+  return;
 };

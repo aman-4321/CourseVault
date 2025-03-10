@@ -50,7 +50,7 @@ export const SignupUser = async (req: Request, res: Response) => {
 
     const userId = user._id;
 
-    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('userToken', token, {
       httpOnly: true,
@@ -302,7 +302,7 @@ export const UpdateUserInfo = async (req: Request, res: Response) => {
 
     await user.save();
 
-    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -324,7 +324,7 @@ export const UpdateUserInfo = async (req: Request, res: Response) => {
 
 //logout
 export const UserLogout = async (req: Request, res: Response) => {
-  res.clearCookie('token', {
+  res.clearCookie('userToken', {
     httpOnly: true,
     sameSite: 'strict',
   });

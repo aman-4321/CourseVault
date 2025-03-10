@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Book, DollarSign, Edit3, Plus, Trash2, User } from "lucide-react";
+import { Book, DollarSign, Plus, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { apiUrl } from "../config";
 import { Course } from "../types/types";
 
@@ -10,7 +10,6 @@ const AdminDashboardCardTopNav = () => {
   const [error, setError] = useState<string | null>(null);
   const [adminCourses, setAdminCourses] = useState<Course[] | null>(null);
   const [earnings, setEarnings] = useState<number | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,28 +60,28 @@ const AdminDashboardCardTopNav = () => {
       </div>
     );
 
+  const defaultImageUrl =
+    "https://bairesdev.mo.cloudinary.net/blog/2022/01/programming-languages-1.jpg?tx=w_1920,q_auto";
+
+  // Function to handle image load errors
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    e.currentTarget.src = defaultImageUrl;
+  };
+
   return (
     <div className="min-h-screen bg-[#fffdf1]">
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <button className="bg-[#ffc36a] text-black px-4 py-2 rounded-md hover:bg-[#ffb347] transition duration-200 flex items-center space-x-2">
-                <Plus size={20} />
-                <Link to="/create-course">Add New Course</Link>
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+            <button className="bg-[#ffc36a] text-black px-4 py-2 rounded-md hover:bg-[#ffb347] transition duration-200 flex items-center space-x-2">
+              <Plus size={20} />
+              <Link to="/create-course">Add New Course</Link>
+            </button>
+          </div>
+
           <div className="flex flex-wrap -mx-4 mb-8">
             <div className="w-full md:w-1/3 px-4 mb-4">
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -140,29 +139,25 @@ const AdminDashboardCardTopNav = () => {
             {adminCourses?.map((course) => (
               <div
                 key={course._id}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
+                className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
               >
                 <img
-                  src={
-                    course.imageUrl || "/placeholder.svg?height=200&width=400"
-                  }
+                  src={course.imageUrl || defaultImageUrl}
                   alt={course.title}
                   className="w-full h-48 object-cover"
+                  onError={handleImageError}
                 />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
-                  <p className="text-gray-600 mb-4">{course.description}</p>
-                  <p className="text-lg font-bold text-[#ffc36a] mb-4">
-                    ${course.price}
-                  </p>
-                  <div className="flex justify-between">
-                    <button
-                      onClick={() => navigate(`/course/${course._id}`)}
-                      className="bg-[#ffc36a] text-black px-3 py-1 rounded-md hover:bg-[#ffb347] transition duration-200 flex items-center space-x-1"
-                    >
-                      <Edit3 size={16} />
-                      <span>Edit</span>
-                    </button>
+                <div className="p-4 flex flex-col flex-grow">
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">
+                      {course.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4">{course.description}</p>
+                    <p className="text-lg font-bold text-[#ffc36a] mb-4">
+                      ${course.price}
+                    </p>
+                  </div>
+                  <div className="mt-auto pt-2">
                     <button
                       onClick={() => deleteCourse(course._id)}
                       className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 flex items-center space-x-1"

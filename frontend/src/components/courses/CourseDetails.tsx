@@ -21,11 +21,43 @@ const CourseDetails = () => {
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [alreadyPurchased, setAlreadyPurchased] = useState(false);
 
-  const { admin } = useAdmin();
-  const { user } = useUser();
+  const { admin, setAdmin } = useAdmin();
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
 
   const currentUser = user || admin;
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        // Check for user authentication
+        const userResponse = await axios.get(`${apiUrl}/user/profile`, {
+          withCredentials: true,
+        });
+
+        if (userResponse.data.user) {
+          setUser(userResponse.data.user);
+        }
+      } catch {
+        // Not authenticated as user
+      }
+
+      try {
+        // Check for admin authentication
+        const adminResponse = await axios.get(`${apiUrl}/admin/profile`, {
+          withCredentials: true,
+        });
+
+        if (adminResponse.data.admin) {
+          setAdmin(adminResponse.data.admin);
+        }
+      } catch {
+        // Not authenticated as admin
+      }
+    };
+
+    checkAuthStatus();
+  }, [setUser, setAdmin]);
 
   useEffect(() => {
     const checkIfPurchased = async () => {
@@ -101,7 +133,10 @@ const CourseDetails = () => {
     );
   }
 
-  const isCreator = currentUser?._id === currentCourse?.creatorId;
+  const isCreator =
+    currentUser?._id && currentCourse?.creatorId
+      ? currentUser._id === currentCourse.creatorId
+      : false;
 
   return (
     <div className="min-h-screen bg-[#fffdf1]">

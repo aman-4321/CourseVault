@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 const HomePageFirstSection = () => {
+  const navigate = useNavigate();
   return (
     <div>
-      <div className="flex flex-row pt-28">
+      <div className="flex flex-row pt-10">
         <div className="pt-52 pl-60">
           <div className="font-medium text-7xl">
             <p className="mb-2">Unlock skills.</p>
@@ -13,21 +16,32 @@ const HomePageFirstSection = () => {
             <p>their industries</p>
           </div>
           <div className="flex">
-            <button className="bg-[#ffc36a] px-7 py-4 text-2xl font-light rounded-lg mt-12 hover:scale-105 transition-all duration-200">
+            <button
+              onClick={() => {
+                navigate("/courses");
+              }}
+              className="bg-[#ffc36a] px-7 py-4 text-2xl font-light rounded-lg mt-12 
+              transition-all duration-500 ease-in-out hover:scale-105 hover:bg-[#ffb347]"
+            >
               Explore courses
             </button>
             <p className="mt-16 pl-5 text-lg">Trusted over 10,000 students </p>
           </div>
         </div>
-        <div className="size-[55rem] pl-72 pt-20">
-          <img
-            src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64ddece6b7dad0d3ddf6ee1c_Abstract%20Hero%20Home.svg"
-            className="absolute top-[9rem] right-[13rem] "
-          />
-          <img
-            src="/hero.png"
-            className="rounded-3xl border-black border-[3px]"
-          />
+        <div className="size-[55rem] pl-72 pt-20 relative">
+          {/* Using relative positioning for the container and absolute for the SVG */}
+          <div className="relative">
+            <img
+              src="https://cdn.prod.website-files.com/64dd941077302a0d6ee48f03/64ddece6b7dad0d3ddf6ee1c_Abstract%20Hero%20Home.svg"
+              className="absolute top-[-2rem] right-[-1rem] z-10 w-[10rem] h-[10rem]"
+              alt="Abstract decoration"
+            />
+            <img
+              src="/hero.png"
+              className="rounded-3xl border-black border-[3px] relative"
+              alt="Hero"
+            />
+          </div>
         </div>
       </div>
     </div>

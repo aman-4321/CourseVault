@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   AdminEarnings,
+  AdminLogout,
   AdminSignin,
   AdminSignup,
   CreateCourse,
@@ -28,3 +29,5 @@ AdminRouter.get('/earnings', adminMiddleware, AdminEarnings);
 AdminRouter.get('/profile', adminMiddleware, GetAdminProfile);
 
 AdminRouter.get('/courses', adminMiddleware, getAdminAllCourses);
+
+AdminRouter.post('/logout', adminMiddleware, AdminLogout);

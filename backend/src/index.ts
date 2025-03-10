@@ -3,9 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { type Express } from 'express';
 import { ConnectToDb } from './db/db';
-import { AdminRouter } from './routes/routes.admin';
-import { CourseRouter } from './routes/routes.course';
-import { UserRouter } from './routes/user.route';
+import { AdminRouter } from './routes/admin.routes';
+import { CourseRouter } from './routes/course.routes';
+import { UserRouter } from './routes/user.routes';
 
 const app: Express = express();
 
@@ -21,7 +21,7 @@ app.use(
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
+  })
 );
 
 app.use(express.json());
