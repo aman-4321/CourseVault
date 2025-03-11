@@ -2,8 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useUser from "../../hooks/useUser";
 import useAdmin from "../../hooks/useAdmin";
-import axios from "axios";
-import { apiUrl } from "../../config";
+import { axiosInstance } from "../../lib/axios";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -30,25 +29,17 @@ export const Navbar = () => {
   const handleLogout = async () => {
     try {
       if (admin) {
-        await axios.post(
-          `${apiUrl}/admin/logout`,
-          {},
-          { withCredentials: true }
-        );
+        await axiosInstance.post(`/admin/logout`);
+
         await adminLogout();
         navigate("/admin-signin");
       } else if (user) {
-        await axios.post(
-          `${apiUrl}/user/logout`,
-          {},
-          { withCredentials: true }
-        );
+        await axiosInstance.post(`/user/logout`);
         await userLogout();
         navigate("/user-signin");
       }
     } catch (error) {
       console.error("Logout failed:", error);
-      // Still attempt to clear local state even if API call fails
       if (admin) {
         await adminLogout();
         navigate("/admin-signin");
@@ -107,7 +98,7 @@ export const Navbar = () => {
         {/* Logo */}
         <div
           className="font-medium text-2xl md:text-3xl cursor-pointer transition-colors duration-300 hover:text-gray-700"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/")}
         >
           CourseVault
         </div>
@@ -180,7 +171,6 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-[#fffdf1] border-t border-gray-200">
           {navItems.map((item) => (
@@ -200,7 +190,6 @@ export const Navbar = () => {
             </div>
           ))}
 
-          {/* Logout Button for mobile */}
           {!isLoading && isAuthenticated && (
             <div
               className="px-4 py-3 cursor-pointer hover:bg-gray-100"

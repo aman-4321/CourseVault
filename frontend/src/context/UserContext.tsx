@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
 import { User } from "../types/types";
-import { apiUrl } from "../config";
+import { axiosInstance } from "../lib/axios";
 
 interface UserContextType {
   user: User | null;
@@ -19,9 +18,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/user/profile`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get(`/user/profile`);
 
         if (response.data && response.data.user) {
           setUser(response.data.user);
@@ -39,13 +36,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await axios.post(
-        `${apiUrl}/user/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      await axiosInstance.post(`/user/logout`);
     } catch (error) {
       console.error("Logout failed", error);
     } finally {

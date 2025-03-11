@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import { axiosInstance } from "../../lib/axios";
 
 const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,12 +17,7 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user/profile`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axiosInstance.get("/user/profile");
 
         if (response.data.user) {
           setUser(response.data.user);

@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiUrl } from "../../config";
 import useAdmin from "../../hooks/useAdmin";
+import { axiosInstance } from "../../lib/axios";
 
 export const AdminProtectedWrapper = ({
   children,
@@ -17,9 +16,7 @@ export const AdminProtectedWrapper = ({
   useEffect(() => {
     const verifyAdmin = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/admin/profile`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get("/admin/profile");
 
         if (response.data.admin) {
           setAdmin(response.data.admin);

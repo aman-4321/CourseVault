@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { apiUrl } from "../config";
 import { CourseContext } from "../context/CourseContext";
+import { axiosInstance } from "../lib/axios";
+import axios from "axios";
 
 const useCourse = () => {
   const context = useContext(CourseContext);
@@ -21,7 +21,7 @@ export const useAllCourses = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/course/all`);
+        const response = await axiosInstance.get(`/course/all`);
         setCourses(response.data.courses);
       } catch (err) {
         if (axios.isAxiosError(err)) {
@@ -46,7 +46,7 @@ export const useSpecificCourse = (_id: string) => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/course/${_id}`);
+        const response = await axiosInstance.get(`/course/${_id}`);
         setCurrentCourse(response.data.course);
       } catch (err) {
         if (axios.isAxiosError(err)) {

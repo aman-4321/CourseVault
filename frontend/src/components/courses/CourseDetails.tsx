@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   AlertCircle,
   Book,
@@ -10,10 +9,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiUrl } from "../../config";
 import useAdmin from "../../hooks/useAdmin";
 import { useSpecificCourse } from "../../hooks/useCourses";
 import useUser from "../../hooks/useUser";
+import { axiosInstance } from "../../lib/axios";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -31,9 +30,7 @@ const CourseDetails = () => {
     const checkAuthStatus = async () => {
       try {
         // Check for user authentication
-        const userResponse = await axios.get(`${apiUrl}/user/profile`, {
-          withCredentials: true,
-        });
+        const userResponse = await axiosInstance.get("/user/profile");
 
         if (userResponse.data.user) {
           setUser(userResponse.data.user);
@@ -44,9 +41,7 @@ const CourseDetails = () => {
 
       try {
         // Check for admin authentication
-        const adminResponse = await axios.get(`${apiUrl}/admin/profile`, {
-          withCredentials: true,
-        });
+        const adminResponse = await axiosInstance.get("/admin/profile");
 
         if (adminResponse.data.admin) {
           setAdmin(adminResponse.data.admin);
@@ -63,9 +58,8 @@ const CourseDetails = () => {
     const checkIfPurchased = async () => {
       try {
         if (user) {
-          const response = await axios.get(`${apiUrl}/user/check/${courseId}`, {
-            withCredentials: true,
-          });
+          const response = await axiosInstance.get(`/user/check/${courseId}`);
+
           if (response.status === 200 && response.data.purchased) {
             setAlreadyPurchased(true);
           } else {
@@ -90,11 +84,8 @@ const CourseDetails = () => {
     if (alreadyPurchased) return;
     setIsPurchasing(true);
     try {
-      const response = await axios.post(
-        `${apiUrl}/user/purchase/${courseId}`,
-        {},
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post(`/user/purchase/${courseId}`);
+
       if (response.status === 200) {
         alert("Course purchased successfully");
         setAlreadyPurchased(true);

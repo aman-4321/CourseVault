@@ -1,9 +1,9 @@
-import axios from "axios";
-import { Book, DollarSign, Plus, Trash2, User } from "lucide-react";
+import { Book, DollarSign, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { apiUrl } from "../config";
 import { Course } from "../types/types";
+import { axiosInstance } from "../lib/axios";
+import axios from "axios";
 
 const AdminDashboardCardTopNav = () => {
   const [loading, setLoading] = useState(true);
@@ -15,8 +15,8 @@ const AdminDashboardCardTopNav = () => {
     const fetchData = async () => {
       try {
         const [coursesResponse, earningsResponse] = await Promise.all([
-          axios.get(`${apiUrl}/admin/courses`, { withCredentials: true }),
-          axios.get(`${apiUrl}/admin/earnings`, { withCredentials: true }),
+          axiosInstance.get(`/admin/courses`),
+          axiosInstance.get(`/admin/earnings`),
         ]);
         setAdminCourses(coursesResponse.data.courses || []);
         setEarnings(earningsResponse.data.totalEarnings);
@@ -34,9 +34,7 @@ const AdminDashboardCardTopNav = () => {
 
   const deleteCourse = async (courseId: string) => {
     try {
-      await axios.delete(`${apiUrl}/admin/course/${courseId}`, {
-        withCredentials: true,
-      });
+      await axiosInstance.delete(`/admin/course/${courseId}`);
       setAdminCourses(
         adminCourses?.filter((course) => course._id !== courseId) || []
       );
@@ -83,7 +81,7 @@ const AdminDashboardCardTopNav = () => {
           </div>
 
           <div className="flex flex-wrap -mx-4 mb-8">
-            <div className="w-full md:w-1/3 px-4 mb-4">
+            <div className="w-full md:w-1/2 px-4 mb-4">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-[#ffc36a] bg-opacity-20">
@@ -100,7 +98,7 @@ const AdminDashboardCardTopNav = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full md:w-1/3 px-4 mb-4">
+            <div className="w-full md:w-1/2 px-4 mb-4">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-[#ffc36a] bg-opacity-20">
@@ -113,21 +111,6 @@ const AdminDashboardCardTopNav = () => {
                     <p className="text-2xl font-semibold">
                       ${earnings?.toFixed(2)}
                     </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 px-4 mb-4">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-center">
-                  <div className="p-3 rounded-full bg-[#ffc36a] bg-opacity-20">
-                    <User size={24} className="text-[#ffc36a]" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm text-gray-500 uppercase">
-                      Total Students
-                    </p>
-                    <p className="text-2xl font-semibold">0</p>
                   </div>
                 </div>
               </div>

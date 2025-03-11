@@ -2,7 +2,6 @@ import axios from "axios";
 import { Book, DollarSign, Rocket, Users } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiUrl } from "../config";
 import useAdmin from "../hooks/useAdmin";
 
 const AdminSignin = () => {
@@ -25,13 +24,7 @@ const AdminSignin = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${apiUrl}/admin/signin`,
-        adminCredentials,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`/admin/signin`, adminCredentials);
 
       if (response.status === 200) {
         setAdmin(response.data.admin);

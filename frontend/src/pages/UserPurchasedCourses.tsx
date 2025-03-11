@@ -1,9 +1,9 @@
-import axios from "axios";
 import { AlertCircle, Book, Calendar, DollarSign, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiUrl } from "../config";
 import { Course } from "../types/types";
+import { axiosInstance } from "../lib/axios";
+import axios from "axios";
 
 interface Purchase {
   _id: string;
@@ -21,9 +21,7 @@ const UserPurchasedCourses = () => {
   useEffect(() => {
     const purchasedCourses = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/user/purchased`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get(`/user/purchased`);
 
         if (response.status === 200) {
           console.log("fetched all courses");
@@ -35,7 +33,7 @@ const UserPurchasedCourses = () => {
         if (axios.isAxiosError(err)) {
           setError(
             err.response?.data?.message ||
-              "Failed to fetch purchased courses of user",
+              "Failed to fetch purchased courses of user"
           );
         }
       } finally {
@@ -122,7 +120,7 @@ const UserPurchasedCourses = () => {
                   <span className="text-sm">
                     Purchased on:{" "}
                     {new Date(
-                      purchase._id.substring(0, 8),
+                      purchase._id.substring(0, 8)
                     ).toLocaleDateString()}
                   </span>
                 </div>

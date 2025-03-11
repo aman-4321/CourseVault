@@ -2,8 +2,8 @@ import axios from "axios";
 import { Book, DollarSign, Rocket, Users } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiUrl } from "../config";
 import useAdmin from "../hooks/useAdmin";
+import { axiosInstance } from "../lib/axios";
 
 const AdminSignup = () => {
   const [email, setEmail] = useState("");
@@ -29,9 +29,7 @@ const AdminSignup = () => {
     };
 
     try {
-      const response = await axios.post(`${apiUrl}/admin/signup`, newAdmin, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(`/admin/signup`, newAdmin);
 
       if (response.status === 200) {
         setAdmin(response.data.admin);

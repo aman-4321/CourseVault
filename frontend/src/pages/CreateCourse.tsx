@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   AlertCircle,
   Book,
@@ -9,8 +8,9 @@ import {
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiUrl } from "../config";
 import { CourseContext } from "../context/CourseContext";
+import { axiosInstance } from "../lib/axios";
+import axios from "axios";
 
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
@@ -43,9 +43,7 @@ const CreateCourse = () => {
     };
 
     try {
-      const response = await axios.post(`${apiUrl}/admin/course`, newCourse, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(`/admin/course`, newCourse);
 
       if (response.status === 200) {
         setCourses(response.data.course);

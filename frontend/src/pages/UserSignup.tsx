@@ -1,8 +1,8 @@
-import axios from "axios";
 import { Book, Lightbulb, Rocket } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiUrl } from "../config";
+import { axiosInstance } from "../lib/axios";
+import axios from "axios";
 
 const MinimalistSplitScreen = () => {
   const [email, setEmail] = useState("");
@@ -21,9 +21,7 @@ const MinimalistSplitScreen = () => {
     const newUser = { email, password, firstName, lastName };
 
     try {
-      const response = await axios.post(`${apiUrl}/user/signup`, newUser, {
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(`/user/signup`, newUser);
 
       if (response.status === 200) {
         navigate("/home");

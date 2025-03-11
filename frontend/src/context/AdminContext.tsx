@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
-import axios from "axios";
 import { Admin } from "../types/types";
-import { apiUrl } from "../config";
+import { axiosInstance } from "../lib/axios";
 
 interface AdminContextType {
   admin: Admin | null;
@@ -19,9 +18,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/admin/profile`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get(`/admin/profile`);
 
         if (response.data && response.data.admin) {
           setAdmin(response.data.admin);
@@ -39,13 +36,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await axios.post(
-        `${apiUrl}/admin/logout`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      await axiosInstance.post(`/admin/logout`);
     } catch (error) {
       console.error("Admin logout failed", error);
     } finally {
