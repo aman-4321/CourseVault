@@ -37,6 +37,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = async () => {
+    setIsLoading(true);
     try {
       await axios.post(
         `${apiUrl}/admin/logout`,
@@ -45,9 +46,11 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         }
       );
-      setAdmin(null);
     } catch (error) {
       console.error("Admin logout failed", error);
+    } finally {
+      setAdmin(null);
+      setIsLoading(false);
     }
   };
 

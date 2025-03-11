@@ -12,29 +12,35 @@ export const AdminProtectedWrapper = ({
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { setAdmin } = useAdmin();
+  const { setAdmin, admin } = useAdmin();
 
   useEffect(() => {
     const verifyAdmin = async () => {
       try {
-        const respone = await axios.get(`${apiUrl}/admin/profile`, {
+        const response = await axios.get(`${apiUrl}/admin/profile`, {
           withCredentials: true,
         });
 
-        if (respone.data.admin) {
-          setAdmin(respone.data.admin);
+        if (response.data.admin) {
+          setAdmin(response.data.admin);
         } else {
           throw new Error("No admin data");
         }
       } catch (err) {
         console.error(err);
-        navigate("/admin-signin");
+        navigate("/admin-signin", { replace: true });
+        return;
       } finally {
         setIsLoading(false);
       }
     };
-    verifyAdmin();
-  }, [navigate, setAdmin]);
+
+    if (!admin) {
+      verifyAdmin();
+    } else {
+      setIsLoading(false);
+    }
+  }, [navigate, setAdmin, admin]);
 
   if (isLoading) {
     return <div>Loading...</div>;

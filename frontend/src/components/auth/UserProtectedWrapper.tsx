@@ -12,7 +12,7 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
     throw new Error("UserContext is not found");
   }
 
-  const { setUser } = context;
+  const { setUser, user } = context;
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -21,7 +21,7 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
           `${import.meta.env.VITE_API_URL}/user/profile`,
           {
             withCredentials: true,
-          },
+          }
         );
 
         if (response.data.user) {
@@ -31,13 +31,19 @@ const UserProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (err) {
         console.error(err);
-        navigate("/user-signin");
+        navigate("/user-signin", { replace: true });
+        return;
       } finally {
         setIsLoading(false);
       }
     };
-    verifyUser();
-  }, [navigate, setUser]);
+
+    if (!user) {
+      verifyUser();
+    } else {
+      setIsLoading(false);
+    }
+  }, [navigate, setUser, user]);
 
   if (isLoading) {
     return <div>Loading...</div>;

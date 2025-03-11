@@ -50,10 +50,10 @@ export const Navbar = () => {
       console.error("Logout failed:", error);
       // Still attempt to clear local state even if API call fails
       if (admin) {
-        adminLogout();
+        await adminLogout();
         navigate("/admin-signin");
       } else if (user) {
-        userLogout();
+        await userLogout();
         navigate("/user-signin");
       }
     }
@@ -61,7 +61,7 @@ export const Navbar = () => {
 
   // Define base navigation items that are always shown
   const baseNavItems = [
-    { name: "Home", path: "/home" },
+    { name: "Home", path: "/" },
     { name: "Courses", path: "/courses" },
   ];
 

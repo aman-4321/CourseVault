@@ -37,6 +37,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = async () => {
+    setIsLoading(true);
     try {
       await axios.post(
         `${apiUrl}/user/logout`,
@@ -45,9 +46,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           withCredentials: true,
         }
       );
-      setUser(null);
     } catch (error) {
       console.error("Logout failed", error);
+    } finally {
+      setUser(null);
+      setIsLoading(false);
     }
   };
 

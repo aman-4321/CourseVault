@@ -55,6 +55,11 @@ export const SignupUser = async (req: Request, res: Response) => {
     res.cookie('userToken', token, {
       httpOnly: true,
       sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
     });
 
     res.status(200).json({
@@ -109,7 +114,11 @@ export const UserSignin = async (req: Request, res: Response) => {
     res.cookie('userToken', token, {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
     });
 
     res.status(200).json({
@@ -304,9 +313,14 @@ export const UpdateUserInfo = async (req: Request, res: Response) => {
 
     const token = jwt.sign({ userId }, USER_JWT_SECRET, { expiresIn: '7d' });
 
-    res.cookie('token', token, {
+    res.cookie('userToken', token, {
       httpOnly: true,
       sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
     });
 
     res.status(200).json({
@@ -324,15 +338,29 @@ export const UpdateUserInfo = async (req: Request, res: Response) => {
 
 //logout
 export const UserLogout = async (req: Request, res: Response) => {
-  res.clearCookie('userToken', {
-    httpOnly: true,
-    sameSite: 'strict',
-  });
+  try {
+    if (!req.cookies.userToken) {
+      res.status(400).json({
+        message: 'Already logged out or no active session',
+      });
+    }
 
-  res.status(200).json({
-    message: 'Logged out successfully',
-  });
-  return;
+    res.clearCookie('userToken', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
+    });
+    res.status(200).json({ message: 'Logged out Successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Error during Logout',
+    });
+  }
 };
 
 export const GetUserProfile = async (req: Request, res: Response) => {

@@ -53,6 +53,11 @@ export const AdminSignup = async (req: Request, res: Response) => {
     res.cookie('adminToken', token, {
       httpOnly: true,
       sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
     });
 
     res.status(200).json({
@@ -111,6 +116,11 @@ export const AdminSignin = async (req: Request, res: Response) => {
     res.cookie('adminToken', token, {
       httpOnly: true,
       sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
     });
 
     res.status(200).json({
@@ -319,15 +329,34 @@ export const GetAdminProfile = async (req: Request, res: Response) => {
 };
 
 // logout
-
 export const AdminLogout = async (req: Request, res: Response) => {
-  res.clearCookie('adminToken', {
-    httpOnly: true,
-    sameSite: 'strict',
-  });
+  try {
+    if (!req.cookies.adminToken) {
+      res.status(400).json({
+        message: 'Already logged out or no active session',
+      });
+    }
 
+    res.clearCookie('adminToken', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.COOKIE_DOMAIN
+          : undefined,
+    });
+    res.status(200).json({ message: 'Logged out Successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Error during Logout',
+    });
+  }
+};
+
+export const GetUserProfile = async (req: Request, res: Response) => {
   res.status(200).json({
-    message: 'Logged out successfully',
+    user: req.user,
   });
-  return;
 };

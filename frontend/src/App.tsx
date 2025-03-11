@@ -14,13 +14,14 @@ import Home from "./pages/Home";
 import UserPurchasedCourses from "./pages/UserPurchasedCourses";
 import UserSignin from "./pages/UserSignin";
 import UserSignup from "./pages/UserSignup";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/home" element={<Home />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route
             path="/user-signup"
             element={
@@ -79,6 +80,8 @@ function App() {
               </AdminProtectedWrapper>
             }
           ></Route>
+
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </Layout>
     </BrowserRouter>

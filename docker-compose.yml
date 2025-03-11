@@ -1,0 +1,53 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: coursevault-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - coursevault-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: coursevault-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/coursevault
+      - PORT=8080
+      - NODE_ENV=development
+    depends_on:
+      - mongodb
+    networks:
+      - coursevault-network
+
+  mongodb:
+    image: mongo:latest
+    container_name: coursevault-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - coursevault-network
+
+networks:
+  coursevault-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
