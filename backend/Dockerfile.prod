@@ -2,7 +2,7 @@ FROM node:22-slim AS builder
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@latest
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
@@ -15,7 +15,7 @@ FROM node:22-slim AS production
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@latest
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
