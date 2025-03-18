@@ -6,6 +6,10 @@ config();
 const DbConnection =
   process.env.MONGODB_URL || 'mongodb://localhost:27017/course-selling';
 
+if (!DbConnection) {
+  throw new Error('MongoDB connection string is not defined');
+}
+
 export async function ConnectToDb() {
   try {
     await mongoose.connect(DbConnection);
